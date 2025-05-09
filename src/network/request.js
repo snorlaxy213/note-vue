@@ -16,28 +16,4 @@ export default function request(option) {
             reject(err)
         })
     })
-
-    // //请求拦截器
-    // instance.interceptors.request.use(config=>{
-    //         console.log(config.baseURL);
-    //         return config;
-    //     },
-    //     error=>{
-    //         console.log(error);
-    //     });
-    //
-    // //回复拦截器
-    // instance.interceptors.response.use(
-    //     result=>{
-    //         console.log(result.data);
-    //
-    //         return result;
-    //     },
-    //     error=>{
-    //         console.log(error);
-    //     });
-
-
-
-
 }
