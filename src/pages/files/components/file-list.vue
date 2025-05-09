@@ -145,8 +145,8 @@ export default {
     },
     computed: {},
     components: {
-        Folder,
-        MyArticle,
+        Folder, // 引入子组件
+        MyArticle, // 引入子组件
     },
 };
 </script>

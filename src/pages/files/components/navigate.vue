@@ -2,14 +2,14 @@
     <div v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading">
         <el-row>   
             <el-col :span="6">
-                <el-button type="primary" round size="mini" @click="open('目录名称')"><i class="el-icon-folder-add"
+                <el-button type="primary" plain size="mini" @click="open('目录名称')"><i class="el-icon-folder-add"
                         style="margin-right: 4px"></i>新建文件夹
                 </el-button>
-                <el-button type="success" round size="mini" @click="open('文章名称')"><i class="el-icon-document-add"
+                <el-button type="success" plain size="mini" @click="open('文章名称')"><i class="el-icon-document-add"
                         style="margin-right: 4px"></i>新建笔记
                 </el-button>
 
-                <el-button type="warning" round size="mini" @click="UploadMd()"><i class="el-icon-upload2"
+                <el-button type="warning" plain size="mini" @click="UploadMd()"><i class="el-icon-upload2"
                         style="margin-right: 4px"></i>上传md
                 </el-button>
             </el-col>
