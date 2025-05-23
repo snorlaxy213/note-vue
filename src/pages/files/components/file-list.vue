@@ -2,20 +2,32 @@
     <div>
         <el-row v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading"
             style="padding-left: 1%; padding-right: 5%">
+            <!--目录-->
+            <folder 
+                @AccessFolder="AccessFolder" 
+                @DeleteFolder="DeleteFolder" 
+                v-for="j in FolderList" 
+                :key="j.id"
+                :folder-info="j">
+            </folder>
+            
+            <!--分页-->
             <el-row style="margin-left: 80%">
                 <el-pagination :hide-on-single-page="false" layout="prev, pager, next" :total="Total" :page-size="13"
                     :current-page="currentPage" @current-change="handleCurrentChange">
                 </el-pagination>
             </el-row>
-            <!--目录-->
-            <folder @AccessFolder="AccessFolder" @DeleteFolder="DeleteFolder" v-for="j in FolderList" :key="j.id"
-                :folder-info="j"></folder>
+            
             <!--文件-->
-            <my-article v-for="(ArticleInfo, k) in ArticleList" :key="k" @NewTab="NewTab" @DeleteArticle="DeleteArticle"
-                :article-info="ArticleInfo"></my-article>
+            <my-article
+                v-for="(ArticleInfo, k) in ArticleList"
+                :key="k" @NewTab="NewTab"
+                @DeleteArticle="DeleteArticle"
+                :article-info="ArticleInfo">
+            </my-article>
 
             <center v-if="FolderList.length == 0 && ArticleList.length == 0">
-                <i class="el-icon-edit" style="margin-top: 10%; font-size: 50px"></i>
+                <i class="el-icon-edit"></i>
                 <span style="font-family: 楷体; font-size: 30px"> 空空如也</span>
             </center>
         </el-row>
@@ -42,15 +54,7 @@ export default {
     },
 
     mounted() {
-        this.loading = true;
         request({
-            url: "/folder/current",
-        }).then((resp) => {
-            this.Nav = resp.data.data;
-            this.Nav = this.Nav.reverse();
-            this.currentTitle = this.Nav[this.Nav.length - 1];
-
-            request({
                 url: "/folder/sub_file/" + 1,
                 params: {
                     title: this.currentTitle,
@@ -70,12 +74,9 @@ export default {
                     this.Total = Number(resp.data.Total);
                     this.$parent.$refs.navigate.$data.Nav = resp.data.Nav.reverse();
                     this.loading = false;
-                })
-                .catch(() => {
-                    
                 });
-        });
     },
+    
     methods: {
         NewTab(ArticleInfo) {
             this.$emit("NewTab", ArticleInfo);
@@ -128,6 +129,7 @@ export default {
             this.Total = Number(total);
             this.currentPage = 1;
         },
+
         handleCurrentChange(val) {
             this.currentPage = val;
             this.loading = true;

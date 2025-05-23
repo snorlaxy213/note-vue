@@ -3,16 +3,16 @@
         <!-- 添加标题栏 -->
         <el-row class="folder-header">
             <el-col :span="16">
-                <span class="header-text">文件名</span>
+                <span class="header-text" style="font-size: 17px" >文件名</span>
             </el-col>
             <el-col :span="4">
-                <span class="header-text">修改时间</span>
+                <span class="header-text" style="font-size: 17px" >修改时间</span>
             </el-col>
             <el-col :span="2">
-                <span class="header-text">类型</span>
+                <span class="header-text" style="font-size: 17px" >类型</span>
             </el-col>
             <el-col :span="2">
-                <span class="header-text">大小</span>
+                <span class="header-text" style="font-size: 17px" >大小</span>
             </el-col>
         </el-row>
 
@@ -25,9 +25,10 @@
                         <el-link class="el-icon-delete" @click="Delete"></el-link>
                     </div>
 
-                    <el-link style="font-size: 17px" @click="AccessFolder">
+                    <el-link style="font-size: 14px" @click="AccessFolder">
                         <i class="el-icon-folder" style="margin-right: 1px"></i>
-                        {{ FolderInfo.title }}</el-link>
+                        {{ FolderInfo.title }}
+                    </el-link>
                 </el-tooltip>
             </el-col>
 
@@ -36,7 +37,7 @@
                 <el-input v-model="FolderInfo.title"></el-input>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="Update">确 定</el-button>
+                    <el-button type="primary" @click="Update" plain>确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -44,7 +45,7 @@
             <el-col :span="4">
                 <i class="el-icon-date" style="color: gainsboro">{{
                     FolderInfo.updated_at.slice(0, 16)
-                    }}</i>
+                }}</i>
             </el-col>
         </el-row>
 
@@ -123,9 +124,9 @@ export default {
 <style scoped>
 .folder-header {
     padding: 15px 20px;
-    background-color: #f5f7fa;
     border-bottom: 1px solid #e6e6e6;
-    margin-bottom: 20px;  /* 增加与内容的间距 */
+    margin-bottom: 20px;
+    /* 增加与内容的间距 */
 }
 
 .header-text {
@@ -135,7 +136,8 @@ export default {
 }
 
 .folder-content {
-    padding: 0 20px;  /* 添加内容区域的内边距 */
+    padding: 0 20px;
+    /* 添加内容区域的内边距 */
 }
 
 /* 响应式布局 */

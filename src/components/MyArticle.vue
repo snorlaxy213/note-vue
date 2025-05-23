@@ -5,7 +5,7 @@
                 <el-tooltip effect="light" placement="right">
                     <div slot="content">
                         <el-link icon="el-icon-edit" @click="Edit"></el-link>
-                        
+
                         <el-divider direction="vertical"></el-divider>
                         <el-link class="el-icon-info"> </el-link>
 
@@ -26,7 +26,7 @@
             <el-col :span="8">
                 <i class="el-icon-date" style="color: gainsboro">{{
                     ArticleInfo.updated_at
-                    }}</i>
+                }}</i>
 
                 <span style="padding-left: 3%">
                     <el-tag size="medium" :key="tag" v-for="tag in this.ArticleInfo.tags" closable
