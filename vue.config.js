@@ -1,4 +1,7 @@
+/* eslint-env node */
 module.exports = {
+    lintOnSave: false,
+
     devServer: {
         port:9002,
 

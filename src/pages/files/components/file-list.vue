@@ -71,8 +71,8 @@ export default {
                     this.$parent.$refs.navigate.$data.Nav = resp.data.Nav.reverse();
                     this.loading = false;
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch(() => {
+                    
                 });
         });
     },

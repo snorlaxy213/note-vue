@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row style="padding-left: 1%">
+        <el-row>
             <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
                 <el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
                     <tab-content @NewTab="addTab" v-if="item.title == 'files'"></tab-content>
@@ -33,12 +33,8 @@ export default {
         };
     },
     methods: {
-        Ping() {
-            console.log("Ping");
-        },
         // eslint-disable-next-line no-unused-vars
         addTab(ArticleInfo) {
-            console.log(ArticleInfo);
             let newTabName = ++this.tabIndex + "";
             this.editableTabs.push({
                 title: ArticleInfo.title,
