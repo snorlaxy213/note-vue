@@ -2,17 +2,31 @@
   <div>
     <el-row v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中"
             style="padding-left: 1%; padding-right: 5%">
+      <!-- 添加标题栏 -->
+      <el-row class="folder-header">
+        <el-col :span="16">
+          <span class="header-text" style="font-size: 17px">文件名</span>
+        </el-col>
+        <el-col :span="4">
+          <span class="header-text" style="font-size: 17px">修改时间</span>
+        </el-col>
+        <el-col :span="2">
+          <span class="header-text" style="font-size: 17px">类型</span>
+        </el-col>
+        <el-col :span="2">
+          <span class="header-text" style="font-size: 17px">大小</span>
+        </el-col>
+      </el-row>
+
       <!--目录-->
       <folder
           v-for="j in FolderList"
           :key="j.id"
-          :folder-info="j"
-          @AccessFolder="AccessFolder"
-          @DeleteFolder="DeleteFolder">
+          :folder-info="j">
       </folder>
 
       <!--分页-->
-      <el-row style="margin-left: 80%">
+      <el-row v-if="FolderList.length !== 0 && ArticleList.length !== 0" style="margin-left: 80%">
         <el-pagination :current-page="currentPage" :hide-on-single-page="false" :page-size="13" :total="Total"
                        layout="prev, pager, next" @current-change="handleCurrentChange">
         </el-pagination>
@@ -26,10 +40,10 @@
           @NewTab="NewTab">
       </my-article>
 
-      <center v-if="FolderList.length == 0 && ArticleList.length == 0">
+      <div v-if="FolderList.length === 0 && ArticleList.length === 0" style="text-align: center;">
         <i class="el-icon-edit"></i>
-        <span style="font-family: 楷体; font-size: 30px"> 空空如也</span>
-      </center>
+        <span style="font-family: system-ui;"> 空空如也</span>
+      </div>
     </el-row>
   </div>
 </template>
@@ -56,19 +70,10 @@ export default {
   mounted() {
     request({
       url: "/folder/sub_file/" + 1,
-      params: {
-        title: this.currentTitle,
-      },
     })
         .then((resp) => {
           this.FolderList = resp.data.Folders;
           this.ArticleList = resp.data.Articles;
-          if (this.FolderList == null) {
-            this.FolderList = [];
-          }
-          if (this.ArticleList == null) {
-            this.ArticleList = [];
-          }
           this.loading = false;
           this.Nav = resp.data.Nav;
           this.Total = Number(resp.data.Total);
@@ -82,29 +87,9 @@ export default {
       this.$emit("NewTab", ArticleInfo);
     },
 
-    DeleteFolder(id) {
-      for (var i = 0; i < this.FolderList.length; i++) {
-        if (this.FolderList[i].id == id) {
-          this.FolderList.splice(i, 1);
-        }
-      }
-
-      this.Total--;
-      if (this.Total % 13 === 0) {
-        //如果不足一页 则退到上一页
-        this.$parent.$refs.FileList.handleCurrentChange(
-            this.$parent.$refs.FileList.currentPage - 1
-        );
-      } else {
-        this.$parent.$refs.FileList.handleCurrentChange(
-            this.$parent.$refs.FileList.currentPage
-        );
-      }
-    },
-
     DeleteArticle(id) {
-      for (var i = 0; i < this.ArticleList.length; i++) {
-        if (this.ArticleList[i].id == id) {
+      for (let i = 0; i < this.ArticleList.length; i++) {
+        if (this.ArticleList[i].id === id) {
           this.ArticleList.splice(i, 1);
         }
       }
@@ -119,15 +104,6 @@ export default {
             this.$parent.$refs.FileList.currentPage
         );
       }
-    },
-
-    AccessFolder(FolderList, ArticleList, nav, total) {
-      this.FolderList = FolderList;
-      this.ArticleList = ArticleList;
-      this.Nav = nav;
-      this.$parent.$refs.navigate.Nav = nav;
-      this.Total = Number(total);
-      this.currentPage = 1;
     },
 
     handleCurrentChange(val) {
@@ -152,4 +128,17 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.folder-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 20px;
+  /* 增加与内容的间距 */
+}
+
+.header-text {
+  font-size: 14px;
+  color: #606266;
+  font-weight: 500;
+}
+</style>

@@ -66,9 +66,9 @@
         style="overflow-y: auto;width: 60%"
     >
       <div style="">
-        <makedown-show
+        <markdown-show
             :mk-value="ArticleInfo.mkValue"
-            background="#F0FFF0"></makedown-show>
+            background="#F0FFF0"></markdown-show>
       </div>
     </el-drawer>
 
@@ -77,10 +77,10 @@
 
 <script>
 import request from "@/network/request";
-import makedownShow from "@/components/makedownShow";
+import MakedownShow from "@/components/MakedownShow.vue";
 
 export default {
-  components: {makedownShow},
+  components: {markdownShow: MakedownShow},
   mounted() {
     this.loading = true;
     request({

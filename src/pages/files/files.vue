@@ -3,9 +3,9 @@
     <el-row>
       <el-tabs v-model="editableTabsValue" closable type="card" @tab-remove="removeTab">
         <el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
-          <tab-content v-if="item.title == 'files'" @NewTab="addTab"></tab-content>
+          <tab-content v-if="item.title === 'files'" @NewTab="addTab"></tab-content>
 
-          <div v-if="item.title != 'files'" style="padding-left: 6%; padding-right: 9%">
+          <div v-if="item.title !== 'files'" style="padding-left: 6%; padding-right: 9%">
             <makedown-show :mk-value="item.content" background="#F0FFF0"></makedown-show>
           </div>
         </el-tab-pane>
@@ -16,7 +16,7 @@
 
 <script>
 import TabContent from "./components/TabContent";
-import MakedownShow from "../../components/makedownShow";
+import MakedownShow from "../../components/MakedownShow.vue";
 
 export default {
   name: "files",
@@ -65,7 +65,7 @@ export default {
 
   components: {
     TabContent,
-    MakedownShow,
+    MakedownShow: MakedownShow,
   },
 };
 </script>

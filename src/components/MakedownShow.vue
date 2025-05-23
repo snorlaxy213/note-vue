@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "markdownShow",
+  name: "MakedownShow",
   props: ["mkValue", "background"],
 };
 </script>

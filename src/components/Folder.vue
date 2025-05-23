@@ -1,20 +1,5 @@
 <template>
   <div v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
-    <!-- 添加标题栏 -->
-    <el-row class="folder-header">
-      <el-col :span="16">
-        <span class="header-text" style="font-size: 17px">文件名</span>
-      </el-col>
-      <el-col :span="4">
-        <span class="header-text" style="font-size: 17px">修改时间</span>
-      </el-col>
-      <el-col :span="2">
-        <span class="header-text" style="font-size: 17px">类型</span>
-      </el-col>
-      <el-col :span="2">
-        <span class="header-text" style="font-size: 17px">大小</span>
-      </el-col>
-    </el-row>
 
     <el-row>
       <el-col :span="16">
@@ -27,7 +12,7 @@
 
           <el-link style="font-size: 14px" @click="AccessFolder">
             <i class="el-icon-folder" style="margin-right: 1px"></i>
-            {{ FolderInfo.title }}
+            <i class="folder-text">{{ FolderInfo.title }}</i>
           </el-link>
         </el-tooltip>
       </el-col>
@@ -122,37 +107,8 @@ export default {
 </script>
 
 <style scoped>
-.folder-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 20px;
-  /* 增加与内容的间距 */
-}
-
-.header-text {
+.folder-text {
   font-size: 14px;
   color: #606266;
-  font-weight: 500;
-}
-
-.folder-content {
-  padding: 0 20px;
-  /* 添加内容区域的内边距 */
-}
-
-/* 响应式布局 */
-@media screen and (max-width: 768px) {
-  .folder-header {
-    padding: 12px 15px;
-    margin-bottom: 15px;
-  }
-
-  .header-text {
-    font-size: 12px;
-  }
-
-  .folder-content {
-    padding: 0 15px;
-  }
 }
 </style>
