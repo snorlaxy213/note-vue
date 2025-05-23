@@ -12,6 +12,6 @@ Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
 new Vue({
-  router:router,
-  render: h => h(App),
+    router: router,
+    render: h => h(App),
 }).$mount('#app');

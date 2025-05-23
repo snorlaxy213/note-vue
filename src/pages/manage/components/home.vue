@@ -1,38 +1,35 @@
 <template>
-    <div>
+  <div>
 
-        <el-col :span="6" >
-            <div @click="Link('article')">
-            <el-card style="margin: 1%;background: honeydew" shadow="hover" >Article</el-card>
-            </div>
-        </el-col>
-
-
-        <el-col :span="6"  >
-            <div @click="Link('my_book')">
-            <el-card style="margin: 1%;background: honeydew" shadow="hover" >MyBook</el-card>
-            </div>
+    <el-col :span="6">
+      <div @click="Link('article')">
+        <el-card shadow="hover" style="margin: 1%;background: honeydew">Article</el-card>
+      </div>
+    </el-col>
 
 
-        </el-col>
+    <el-col :span="6">
+      <div @click="Link('my_book')">
+        <el-card shadow="hover" style="margin: 1%;background: honeydew">MyBook</el-card>
+      </div>
 
 
+    </el-col>
 
 
-
-    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "home",
-        methods:{
-            Link(path){
+export default {
+  name: "home",
+  methods: {
+    Link(path) {
 
-                this.$router.push("/manage/"+path)
-            }
-        }
+      this.$router.push("/manage/" + path)
     }
+  }
+}
 </script>
 
 <style scoped>
