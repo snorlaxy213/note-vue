@@ -4,8 +4,11 @@
             style="padding-left: 1%; padding-right: 5%">
       <!-- 添加标题栏 -->
       <el-row class="folder-header">
-        <el-col :span="16">
+        <el-col :span="10">
           <span class="header-text" style="font-size: 17px">文件名</span>
+        </el-col>
+        <el-col :span="6">
+          <span class="header-text" style="font-size: 17px">标签</span>
         </el-col>
         <el-col :span="4">
           <span class="header-text" style="font-size: 17px">修改时间</span>

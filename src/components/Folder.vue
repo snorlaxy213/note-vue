@@ -2,7 +2,7 @@
   <div v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
 
     <el-row>
-      <el-col :span="16">
+      <el-col :span="10">
         <el-tooltip effect="light" placement="right">
           <div slot="content">
             <el-link icon="el-icon-edit" @click="dialogVisible = true"></el-link>
@@ -25,6 +25,11 @@
                     <el-button plain type="primary" @click="Update">确 定</el-button>
                 </span>
       </el-dialog>
+
+      <!--标签-->
+      <el-col :span="6">
+        <el-tag>标签一</el-tag>
+      </el-col>
 
       <!--日期-->
       <el-col :span="4">

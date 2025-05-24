@@ -1,7 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
     <el-row>
-      <el-col :span="16">
+      <el-col :span="10">
         <el-tooltip effect="light" placement="right">
           <div slot="content">
             <el-link icon="el-icon-edit" @click="Edit"></el-link>
@@ -23,25 +23,51 @@
         </el-tooltip>
       </el-col>
 
-      <!--                    日期-->
+      <!--标签-->
+      <el-col :span="6">
+        <span>
+          <!-- 循环渲染所有标签 -->
+          <el-tag
+              v-for="tag in this.ArticleInfo.tags"
+              :key="tag"
+              :disable-transitions="false"
+              closable
+              @close="handleClose(tag)"
+              style="margin-right: 5px;">
+            {{ tag }}
+          </el-tag>
+
+          <!-- 输入新标签的输入框（仅当 inputVisible 为 true 时显示） -->
+          <el-input
+              v-if="inputVisible"
+              ref="saveTagInput"
+              v-model="inputValue"
+              class="input-new-tag"
+              size="small"
+              @blur="handleInputConfirm"
+              @keyup.enter.native="handleInputConfirm">
+          </el-input>
+
+          <!-- 添加新标签按钮（仅当 inputVisible 为 false 时显示） -->
+          <el-button
+              v-else
+              class="button-new-tag"
+              size="small"
+              @click="showInput">
+            +
+          </el-button>
+        </span>
+      </el-col>
+
+      <!--日期-->
       <el-col :span="8">
         <i class="el-icon-date" style="color: gainsboro">{{
             ArticleInfo.updated_at
           }}</i>
-
-        <span style="padding-left: 3%">
-                    <el-tag v-for="tag in this.ArticleInfo.tags" :key="tag" :disable-transitions="false" closable
-                            size="medium" @close="handleClose(tag)">
-                        {{ tag }}
-                    </el-tag>
-                    <el-input v-if="inputVisible" ref="saveTagInput" v-model="inputValue" class="input-new-tag"
-                              size="small" @blur="handleInputConfirm" @keyup.enter.native="handleInputConfirm">
-                    </el-input>
-                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+</el-button>
-                </span>
       </el-col>
     </el-row>
-    <!--                横线-->
+
+    <!--横线-->
     <el-row>
       <hr style="border: 0.08em solid lightgoldenrodyellow"/>
     </el-row>
@@ -53,9 +79,9 @@ import request from "@/network/request";
 
 export default {
   name: "MyArticle",
-
   props: ["ArticleInfo"],
   mounted() {
+    console.log(JSON.stringify(this.ArticleInfo, null, 2))
     if (this.ArticleInfo.tags[0] === "") {
       this.ArticleInfo.tags = [];
     }
@@ -76,7 +102,6 @@ export default {
       dialogVisible: false,
       articleView: null,
       loading: false,
-
       inputVisible: false,
       inputValue: "",
     };
