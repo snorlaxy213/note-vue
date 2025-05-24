@@ -1,28 +1,21 @@
 <template>
-  <div
-
-  >
-
+  <div>
     <top-bar @ForeverDelete="ForeverDelete"></top-bar>
-
 
     <el-row v-loading="loading"
             element-loading-spinner="el-icon-loading"
             element-loading-text="拼命加载中"
-            style="padding: 2%"
+            style="padding-left: 1%; padding-right: 5%"
     >
-      <!--            文件-->
+      <!--文件-->
       <rubbish-file v-for="f in ArticleList" :key="f.id" :file-info="f" @Recover="Recover"></rubbish-file>
 
-
-      <center v-if="ArticleList.length==0">
-        <i class="el-icon-edit" style="margin-top: 10%;font-size: 50px;"></i>
-        <span style="font-family: 楷体;font-size: 30px"> 空空如也</span>
-      </center>
-
+      <div v-if="ArticleList.length===0" style="text-align: center;">
+        <i class="el-icon-edit"></i>
+        <span style="font-family: system-ui;"> 空空如也</span>
+      </div>
 
     </el-row>
-
   </div>
 </template>
 
@@ -47,8 +40,6 @@ export default {
       this.Count = resp.data.total;
       this.loading = false
     })
-
-
   },
 
   data: function () {
@@ -59,6 +50,7 @@ export default {
       Count: 0
     }
   },
+
   methods: {
     Recover(id) {
       this.loading = true;
@@ -68,33 +60,27 @@ export default {
           id: id
         }
       }).then(resp => {
-
-        if (resp.data.code == 500) {
+        if (resp.data.code === 500) {
           this.$message({
             type: "warning",
             message: resp.data.msg
           })
-
         } else {
           this.$message({
             type: "success",
             message: resp.data.msg
           });
 
-          for (var i = 0; i < this.ArticleList.length; i++) {
-            if (this.ArticleList[i].id == id) {
+          for (let i = 0; i < this.ArticleList.length; i++) {
+            if (this.ArticleList[i].id === id) {
               this.ArticleList.splice(i, 1)
             }
           }
 
         }
-
         this.loading = false
-
-
       })
     },
-
 
     ForeverDelete() {
       this.loading = true;
@@ -105,12 +91,10 @@ export default {
           type: "success",
           message: resp.data.msg
         });
-
         this.ArticleList = [];
         this.loading = false
       })
     }
-
   }
 }
 </script>
