@@ -61,9 +61,7 @@
 
       <!--日期-->
       <el-col :span="8">
-        <i class="el-icon-date" style="color: gainsboro">{{
-            ArticleInfo.updated_at
-          }}</i>
+        <i class="el-icon-date" style="color: gainsboro">{{ArticleInfo.updated_at }}</i>
       </el-col>
     </el-row>
 

@@ -3,7 +3,7 @@
     <el-row v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中"
             style="padding-left: 1%; padding-right: 5%">
       <!-- 添加标题栏 -->
-      <el-row class="folder-header">
+      <el-row style="padding: 20px 0" class="folder-header">
         <el-col :span="10">
           <span class="header-text" style="font-size: 17px">文件名</span>
         </el-col>
@@ -133,7 +133,6 @@ export default {
 </script>
 <style scoped>
 .folder-header {
-  padding: 15px 20px;
   border-bottom: 1px solid #e6e6e6;
   margin-bottom: 20px;
   /* 增加与内容的间距 */
