@@ -4,10 +4,7 @@
       <el-col :span="10">
         <el-tooltip effect="light" placement="right">
           <div slot="content">
-            <el-link icon="el-icon-edit" @click="Edit"></el-link>
-
-            <el-divider direction="vertical"></el-divider>
-            <el-link class="el-icon-info"></el-link>
+            <el-link icon="el-icon-edit" @click="EditArticle"></el-link>
 
             <el-divider direction="vertical"></el-divider>
             <el-link class="el-icon-delete" @click="DeleteArticle"></el-link>
@@ -15,6 +12,7 @@
             <el-divider direction="vertical"></el-divider>
             <el-link class="el-icon-download" @click="DownLoad(ArticleInfo)"></el-link>
           </div>
+
           <el-link style="font-weight: bolder; font-size: 15px" target="_blank"
                    @click="GetArticleInfo(ArticleInfo.id)">
             <i class="el-icon-document" style="margin-right: 1px"></i>
@@ -79,7 +77,6 @@ export default {
   name: "MyArticle",
   props: ["ArticleInfo"],
   mounted() {
-    console.log(JSON.stringify(this.ArticleInfo, null, 2))
     if (this.ArticleInfo.tags[0] === "") {
       this.ArticleInfo.tags = [];
     }
@@ -204,7 +201,7 @@ export default {
       });
     },
 
-    Edit() {
+    EditArticle() {
       this.loading = true;
       //注意 axios是异步请求
       request({
