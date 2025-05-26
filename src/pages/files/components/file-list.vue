@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import Folder from "@/components/Folder";
+import Folder from "@/components/Folder.vue";
 import MyArticle from "@/components/MyArticle";
 import request from "@/network/request";
 
