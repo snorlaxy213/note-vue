@@ -77,10 +77,10 @@
 
 <script>
 import request from "@/network/request";
-import MakedownShow from "@/components/MakedownShow.vue";
+import MavonEditor from "@/components/mavon-editor.vue";
 
 export default {
-  components: {markdownShow: MakedownShow},
+  components: {markdownShow: MavonEditor},
   mounted() {
     this.loading = true;
     request({

@@ -6,7 +6,7 @@
           <tab-content v-if="item.title === 'files'" @NewTab="addTab"></tab-content>
 
           <div v-if="item.title !== 'files'" style="padding-left: 6%; padding-right: 9%">
-            <makedown-show :mk-value="item.content" background="#F0FFF0"></makedown-show>
+            <MarkdownShow :mk-value="item.content" background="#F0FFF0"></MarkdownShow>
           </div>
 
         </el-tab-pane>
@@ -17,7 +17,7 @@
 
 <script>
 import TabContent from "./components/tab-content.vue";
-import MakedownShow from "../../components/MakedownShow.vue";
+import MavonEditor from "../../components/mavon-editor.vue";
 
 export default {
   name: "files",
@@ -34,11 +34,13 @@ export default {
       tabIndex: 1,
     };
   },
+
   methods: {
 
     // eslint-disable-next-line no-unused-vars
     addTab(ArticleInfo) {
       let newTabName = ++this.tabIndex + "";
+
       this.editableTabs.push({
         title: ArticleInfo.title,
         name: newTabName,
@@ -67,7 +69,7 @@ export default {
 
   components: {
     TabContent,
-    MakedownShow: MakedownShow,
+    MarkdownShow: MavonEditor,
   },
 };
 </script>

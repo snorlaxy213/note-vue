@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "MakedownShow",
+  name: "MavonEditor",
   props: ["mkValue", "background"],
 };
 </script>

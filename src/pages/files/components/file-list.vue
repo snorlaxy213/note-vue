@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import Folder from "@/components/Folder";
-import MyArticle from "@/components/MyArticle";
+import Folder from "@/components/folder.vue";
+import Article from "@/components/article.vue";
 import request from "@/network/request";
 
 export default {
@@ -113,7 +113,7 @@ export default {
   computed: {},
   components: {
     Folder,
-    MyArticle,
+    MyArticle: Article,
   },
 };
 </script>
