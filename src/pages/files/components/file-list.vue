@@ -31,9 +31,11 @@
           :folder-info="j">
       </folder>
 
-      <!--分割线-->
-      <el-row style="padding: 20px 0">
-        <el-col :span="24" style="border-bottom: 2px solid #e6e6e6"></el-col>
+      <!--分页-->
+      <el-row v-if="FolderList.length !== 0 && ArticleList.length !== 0" style="margin-left: 80%">
+        <el-pagination :current-page="currentPage" :hide-on-single-page="false" :page-size="13" :total="Total"
+                       layout="prev, pager, next" @current-change="handleCurrentChange">
+        </el-pagination>
       </el-row>
 
       <!--文件-->
@@ -53,8 +55,8 @@
 </template>
 
 <script>
-import Folder from "@/components/folder.vue";
-import Article from "@/components/article.vue";
+import Folder from "@/components/Folder.vue";
+import MyArticle from "@/components/MyArticle";
 import request from "@/network/request";
 
 export default {
@@ -109,11 +111,26 @@ export default {
         );
       }
     },
+
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.loading = true;
+      request({
+        url: "/folder/sub_file/" + this.currentPage,
+        params: {
+          title: this.Nav[this.Nav.length - 1],
+        },
+      }).then((resp) => {
+        this.FolderList = resp.data.Folders;
+        this.ArticleList = resp.data.Articles;
+        this.loading = false;
+      });
+    },
   },
   computed: {},
   components: {
     Folder,
-    MyArticle: Article,
+    MyArticle,
   },
 };
 </script>
