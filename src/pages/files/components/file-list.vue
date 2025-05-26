@@ -31,11 +31,9 @@
           :folder-info="j">
       </folder>
 
-      <!--分页-->
-      <el-row v-if="FolderList.length !== 0 && ArticleList.length !== 0" style="margin-left: 80%">
-        <el-pagination :current-page="currentPage" :hide-on-single-page="false" :page-size="13" :total="Total"
-                       layout="prev, pager, next" @current-change="handleCurrentChange">
-        </el-pagination>
+      <!--分割线-->
+      <el-row style="padding: 20px 0">
+        <el-col :span="24" style="border-bottom: 2px solid #e6e6e6"></el-col>
       </el-row>
 
       <!--文件-->
@@ -110,21 +108,6 @@ export default {
             this.$parent.$refs.FileList.currentPage
         );
       }
-    },
-
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.loading = true;
-      request({
-        url: "/folder/sub_file/" + this.currentPage,
-        params: {
-          title: this.Nav[this.Nav.length - 1],
-        },
-      }).then((resp) => {
-        this.FolderList = resp.data.Folders;
-        this.ArticleList = resp.data.Articles;
-        this.loading = false;
-      });
     },
   },
   computed: {},

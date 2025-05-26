@@ -8,6 +8,7 @@
           <div v-if="item.title !== 'files'" style="padding-left: 6%; padding-right: 9%">
             <makedown-show :mk-value="item.content" background="#F0FFF0"></makedown-show>
           </div>
+
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-import TabContent from "./components/TabContent";
+import TabContent from "./components/tab-content.vue";
 import MakedownShow from "../../components/MakedownShow.vue";
 
 export default {
@@ -34,6 +35,7 @@ export default {
     };
   },
   methods: {
+
     // eslint-disable-next-line no-unused-vars
     addTab(ArticleInfo) {
       let newTabName = ++this.tabIndex + "";
@@ -44,6 +46,7 @@ export default {
       });
       this.editableTabsValue = newTabName;
     },
+
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
@@ -57,7 +60,6 @@ export default {
           }
         });
       }
-
       this.editableTabsValue = activeName;
       this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
     },

@@ -6,15 +6,12 @@
        style="padding-left: 1%;"
   >
 
-
     <!--编辑器-->
     <el-col :span="21" style="padding-right: 1%;">
       <el-row>
-
         <div style="text-align: center;margin-bottom: 1%;margin-top: 1%;font-size: 30px">
           <el-input v-model="article.title" placeholder="标题"></el-input>
         </div>
-
       </el-row>
       <el-row>
         <mavon-editor ref="md" v-model="article.mkValue"
@@ -24,25 +21,19 @@
                       @imgDel="ImgDel"
                       @save="Save"/>
       </el-row>
-      <el-row style="text-align: center">
-        <el-link type="success">感谢使用</el-link>
-      </el-row>
     </el-col>
 
-
-    <!--        编辑器侧边信息-->
+    <!--编辑器侧边信息-->
     <el-col :span="3" style="padding-top: 2%">
 
-      <!--            日期-->
+      <!--日期-->
       <div style="text-align: center">
         创建日期: <i class="el-icon-date" style="color: deepskyblue">{{ article.created_at }}</i><br>
         最近更新: <i class="el-icon-date" style="color: orange">{{ article.updated_at }}</i>
-
       </div>
       <el-divider></el-divider>
 
-
-      <!--          目录-->
+      <!--目录-->
       <div>
         目录:
         <el-cascader
@@ -52,28 +43,21 @@
             clearable
             filterable
         ></el-cascader>
-
-
       </div>
       <el-divider></el-divider>
 
-
-      <!--           保存-->
+      <!--保存-->
       <div style="text-align: center">
         <el-button type="success" @click="FinishSave">保存文章</el-button>
         <el-link @click="DeleteCache">清空</el-link>
       </div>
 
     </el-col>
-
   </div>
 </template>
-
 <script>
 
-
 import request from "@/network/request";
-
 
 export default {
   name: "write",
@@ -91,9 +75,8 @@ export default {
         this.loading = false;
       })
     }
-
-
   },
+
   beforeDestroy() {
     if (this.article.id !== 0 && this.article.id != null) {
       request({
@@ -108,13 +91,10 @@ export default {
 
       })
     }
-
   },
-
 
   data: function () {
     return {
-
       loading: false,
       //目录
       options: [],
@@ -132,12 +112,8 @@ export default {
           }).then(resp => {
             resolve(resp.data.data);
           });
-
-
         }
-
       },
-
 
       article: {
         id: null,
@@ -148,14 +124,10 @@ export default {
         mkValue: "",
         folder_id: 0,
       },
-
-
     }
-
-
   },
-  methods: {
 
+  methods: {
     //点击保存事件
     FinishSave() {
       this.loading = true;
@@ -252,7 +224,7 @@ export default {
     },
 
 
-//清空redis缓存
+    //清空redis缓存
     DeleteCache() {
       request({
         url: '/article/temp_delete',
