@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <el-row style="margin-bottom: 1%">
+    <el-row style="margin-bottom: 1%; min-height: 100vh;">
       <!--侧边导航-->
-      <el-col :span="1">
-        <el-menu :collapse="true" :default-active="navIndex">
+      <el-col :span="1" style="height: 100vh;">
+        <el-menu :collapse="true" :default-active="navIndex" style="height: 100%; border-right: 1px solid #e6e6e6;">
           <el-menu-item index="write" @click="Link('write')">
             <i class="el-icon-edit"></i>
             <span slot="title">Write</span>
@@ -21,7 +21,7 @@
 
           <el-menu-item index="mybook" @click="Link('mybook')">
             <i class="el-icon-reading"></i>
-            <span slot="title">MyBook</span>
+            <span slot="title">Book</span>
           </el-menu-item>
 
           <el-menu-item index="manage" @click="Link('manage')">
@@ -46,19 +46,31 @@ export default {
       rate: null
     }
   },
+
   methods: {
     Link(path) {
       this.$router.push("/" + path)
     }
   },
+
   computed: {
     navIndex() {
       return this.$route.name;
     }
   }
+
 }
 </script>
 
 <style>
+#app {
+  height: 100vh;
+  overflow: hidden;
+}
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 </style>

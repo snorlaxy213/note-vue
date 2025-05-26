@@ -2,20 +2,21 @@
   <div v-loading.fullscreen.lock="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
     <el-row>
       <el-col :span="6">
-        <el-button plain size="mini" type="primary" @click="open('目录名称')"><i class="el-icon-folder-add"
-                                                                                 style="margin-right: 4px"></i>新建文件夹
-        </el-button>
-        <el-button plain size="mini" type="success" @click="open('文章名称')"><i class="el-icon-document-add"
-                                                                                 style="margin-right: 4px"></i>新建笔记
+        <el-button plain size="mini" type="primary" @click="open('目录名称')">
+          <i class="el-icon-folder-add" style="margin-right: 4px"></i>新建文件夹
         </el-button>
 
-        <el-button plain size="mini" type="warning" @click="UploadMd()"><i class="el-icon-upload2"
-                                                                           style="margin-right: 4px"></i>上传md
+        <el-button plain size="mini" type="success" @click="open('文章名称')">
+          <i class="el-icon-document-add" style="margin-right: 4px"></i>新建笔记
+        </el-button>
+
+        <el-button plain size="mini" type="warning" @click="UploadMd()">
+          <i class="el-icon-upload2" style="margin-right: 4px"></i>上传md
         </el-button>
       </el-col>
     </el-row>
 
-    <!--        上传dig-->
+    <!--上传dig-->
     <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
       <el-upload ref="upload" :auto-upload="false" :http-request="ht" multiple>
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -23,9 +24,10 @@
         </el-button>
       </el-upload>
       <span slot="footer" class="dialog-footer">
-                <el-button @click="CloseUpLoad">取 消</el-button>
-            </span>
+        <el-button @click="CloseUpLoad">取 消</el-button>
+      </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -41,6 +43,7 @@ export default {
       dialogVisible: false,
     };
   },
+
   methods: {
     CloseUpLoad() {
       this.$parent.$refs.FileList.Total++;
@@ -87,9 +90,11 @@ export default {
         }
       });
     },
+
     submitUpload() {
       this.$refs.upload.submit();
     },
+
     UploadMd() {
       this.dialogVisible = true;
     },
@@ -140,8 +145,7 @@ export default {
               title: value,
               folder_title: this.Nav[this.Nav.length - 1],
             },
-          })
-              .then((resp) => {
+          }).then((resp) => {
                 this.$message({
                   type: "success",
                   message: resp.data.msg,
@@ -175,29 +179,10 @@ export default {
                   );
                 }
               })
-              .catch(() => {
-
-              });
         }
       });
     },
-    ChangeNav(title) {
-      this.loading = true;
-      request({
-        url: "/folder/sub_file/" + 1,
-        params: {
-          title: title,
-        },
-      }).then((resp) => {
-        this.$parent.$refs.FileList.AccessFolder(
-            resp.data.Folders,
-            resp.data.Articles,
-            resp.data.Nav.reverse(),
-            resp.data.Total
-        );
-        this.loading = false;
-      });
-    },
+
   },
 };
 </script>
