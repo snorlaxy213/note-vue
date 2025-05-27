@@ -7,9 +7,11 @@
             <el-link icon="el-icon-edit" @click="EditArticle"></el-link>
 
             <el-divider direction="vertical"></el-divider>
+
             <el-link class="el-icon-delete" @click="DeleteArticle"></el-link>
 
             <el-divider direction="vertical"></el-divider>
+
             <el-link class="el-icon-download" @click="DownLoad(ArticleInfo)"></el-link>
           </div>
 
