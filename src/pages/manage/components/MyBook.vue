@@ -112,7 +112,7 @@
 import request from "@/network/request";
 
 export default {
-  name: "mybook",
+  name: "MyBook",
   mounted() {
     this.loading = true;
     request({

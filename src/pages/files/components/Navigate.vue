@@ -33,7 +33,7 @@
 import request from "@/network/request";
 
 export default {
-  name: "navigate",
+  name: "Navigate",
   data: function () {
     return {
       Nav: [],

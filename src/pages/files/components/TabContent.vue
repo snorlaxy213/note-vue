@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import navigate from "./navigate";
-import FileList from "./file-list";
+import Navigate from "./Navigate";
+import FileList from "./FileList";
 
 export default {
   name: "TabContent",
   components: {
-    navigate,
+    Navigate,
     FileList,
   },
   methods: {

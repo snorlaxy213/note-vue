@@ -11,7 +11,7 @@ const routes = [
     {
         name: "files",
         path: "/files",
-        component: () => import("../pages/files/files.vue")
+        component: () => import("../pages/files/Files.vue")
     },
     {
         name: "write",
@@ -22,34 +22,34 @@ const routes = [
     {
         name: "rubbish",
         path: "/rubbish",
-        component: () => import("../pages/rubbish/rubbish.vue")
+        component: () => import("../pages/rubbish/Rubbish.vue")
     },
     {
         name: "manage",
         path: "/manage",
-        component: () => import("../pages/manage/manage.vue"),
+        component: () => import("../pages/manage/Manage.vue"),
         children: [
             {
                 name: 'manage',
                 path: '',
-                component: () => import("../pages/manage/components/home.vue")
+                component: () => import("../pages/manage/components/Home.vue")
             },
             {
                 name: 'manage',
                 path: 'my_book',
-                component: () => import("../pages/manage/components/mybook.vue")
+                component: () => import("../pages/manage/components/MyBook.vue")
             },
             {
                 name: "manage",
                 path: 'article',
-                component: () => import("../pages/manage/components/article.vue")
+                component: () => import("../pages/manage/components/Article.vue")
             },
         ]
     },
     {
         name: "mybook",
         path: "/mybook",
-        component: () => import("../pages/book/book.vue")
+        component: () => import("../pages/book/Book.vue")
     }
 
 

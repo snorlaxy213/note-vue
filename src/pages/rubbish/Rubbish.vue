@@ -25,7 +25,7 @@ import TopBar from "@/pages/rubbish/components/TopBar";
 import request from "@/network/request";
 
 export default {
-  name: "rubbish",
+  name: "Rubbish",
   components: {TopBar, RubbishFile},
 
   mounted() {

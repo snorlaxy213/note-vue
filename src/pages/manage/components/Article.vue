@@ -80,6 +80,7 @@ import request from "@/network/request";
 import MakedownShow from "@/components/MakedownShow.vue";
 
 export default {
+  name: "Article",
   components: {markdownShow: MakedownShow},
   mounted() {
     this.loading = true;
@@ -91,7 +92,6 @@ export default {
       this.loading = false;
     })
   },
-  name: "article",
   data: function () {
     return {
       loading: false,

@@ -30,7 +30,7 @@
 import request from "@/network/request";
 
 export default {
-  name: "my",
+  name: "Book",
   mounted() {
     this.loading2 = true;
     request({
