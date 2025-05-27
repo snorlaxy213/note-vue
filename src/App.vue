@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <el-row style="margin-bottom: 1%">
+    <el-row>
       <!--侧边导航-->
       <el-col :span="1">
-        <el-menu :collapse="true" :default-active="navIndex">
-          <el-menu-item index="write" @click="Link('write')">
+        <el-menu :collapse="true" :default-active="navIndex" class="sidebar-menu">
+          <el-menu-item class="el-menu-item" index="write" @click="Link('write')">
             <i class="el-icon-edit"></i>
             <span slot="title">Write</span>
           </el-menu-item>
@@ -31,7 +31,7 @@
       </el-col>
 
       <!--页面-->
-      <el-col :span="23">
+      <el-col :span="23" style="padding: 10px">
         <router-view></router-view>
       </el-col>
     </el-row>
@@ -60,5 +60,10 @@ export default {
 </script>
 
 <style>
+.sidebar-menu {
+  position: relative;
+  height: 100vh;
+  border-right: 1px solid #e6e6e6;
+}
 
 </style>
