@@ -243,10 +243,13 @@ export default {
   border-bottom: 1px solid #f5f5f5;
   transition: background-color 0.3s;
   font-size: 14px;
+  border-radius: 4px;
+  margin: 0 4px;
 }
 
 .article-item:hover {
   background-color: #f8f9fa;
+  border-radius: 4px;
 }
 
 .article-item:last-child {
