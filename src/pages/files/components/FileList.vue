@@ -28,7 +28,8 @@
       <folder
           v-for="j in FolderList"
           :key="j.id"
-          :folder-info="j">
+          :folder-info="j"
+          @AccessFolder="handleAccessFolder">
       </folder>
 
       <!--分页-->
@@ -89,6 +90,20 @@ export default {
   },
 
   methods: {
+    // 新增：处理文件夹访问事件
+    handleAccessFolder(folders, articles, nav, total) {
+      this.FolderList = folders;
+      this.ArticleList = articles;
+      this.Nav = nav;
+      this.Total = Number(total);
+      this.currentPage = 1; // 重置到第一页
+      
+      // 更新导航栏
+      if (this.$parent.$refs.navigate) {
+        this.$parent.$refs.navigate.$data.Nav = nav;
+      }
+    },
+
     NewTab(ArticleInfo) {
       this.$emit("NewTab", ArticleInfo);
     },
