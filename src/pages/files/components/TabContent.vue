@@ -2,8 +2,11 @@
   <div>
     <!--面包导航-->
     <navigate ref="navigate"></navigate>
+
     <!--文件列表-->
-    <file-list ref="FileList" @NewTab="NewTab"></file-list>
+    <div class="file-list-wrapper">
+      <file-list ref="FileList" @NewTab="NewTab"></file-list>
+    </div>
   </div>
 </template>
 
@@ -25,4 +28,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.file-list-wrapper {
+  margin-top: 8px;
+}
+</style>

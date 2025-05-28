@@ -1,30 +1,27 @@
 <template>
   <div v-loading.fullscreen.lock="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
-    <el-row>
-      <el-col :span="10">
+    <div class="article-item">
+      <!-- 文件名列 -->
+      <div class="article-name">
         <el-tooltip effect="light" placement="right">
           <div slot="content">
             <el-link icon="el-icon-edit" @click="EditArticle"></el-link>
-
             <el-divider direction="vertical"></el-divider>
-
             <el-link class="el-icon-delete" @click="DeleteArticle"></el-link>
-
             <el-divider direction="vertical"></el-divider>
-
             <el-link class="el-icon-download" @click="DownLoad(ArticleInfo)"></el-link>
           </div>
 
-          <el-link style="font-weight: bolder; font-size: 15px" target="_blank"
+          <el-link style="font-weight: bolder; font-size: 14px" target="_blank"
                    @click="GetArticleInfo(ArticleInfo.id)">
-            <i class="el-icon-document" style="margin-right: 1px"></i>
+            <i class="el-icon-document" style="margin-right: 6px; color: #666; font-size: 16px;"></i>
             {{ ArticleInfo.title }}
           </el-link>
         </el-tooltip>
-      </el-col>
+      </div>
 
-      <!--标签-->
-      <el-col :span="6">
+      <!-- 标签列 -->
+      <div class="article-tags">
         <span>
           <!-- 循环渲染所有标签 -->
           <el-tag
@@ -33,6 +30,7 @@
               :disable-transitions="false"
               closable
               @close="handleClose(tag)"
+              size="small"
               style="margin-right: 5px;">
             {{ tag }}
           </el-tag>
@@ -57,18 +55,23 @@
             +
           </el-button>
         </span>
-      </el-col>
+      </div>
 
-      <!--日期-->
-      <el-col :span="8">
-        <i class="el-icon-date">{{ArticleInfo.updated_at }}</i>
-      </el-col>
-    </el-row>
+      <!-- 修改时间列 -->
+      <div class="article-time">
+        <span>{{ ArticleInfo.updated_at }}</span>
+      </div>
 
-    <!--横线-->
-    <el-row>
-      <hr style="border: 0.08em solid lightgoldenrodyellow"/>
-    </el-row>
+      <!-- 类型列 -->
+      <div class="article-type">
+        <span>笔记</span>
+      </div>
+
+      <!-- 大小列 -->
+      <div class="article-size">
+        <span>{{ formatFileSize(ArticleInfo.size || 0) }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -95,7 +98,6 @@ export default {
         title: "",
         id: 0,
       },
-
       editDialogVisible: false,
       articleView: null,
       loading: false,
@@ -105,6 +107,15 @@ export default {
   },
 
   methods: {
+    // 格式化文件大小
+    formatFileSize(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    },
+
     DownLoad(val) {
       console.log(val.id);
       this.loading = true;
@@ -224,4 +235,96 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.article-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.article-item:hover {
+  background-color: #f8f9fa;
+}
+
+.article-item:last-child {
+  border-bottom: none;
+}
+
+.article-name {
+  flex: 0 0 40%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.article-tags {
+  flex: 0 0 20%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.article-time {
+  flex: 0 0 20%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.article-type {
+  flex: 0 0 10%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.article-size {
+  flex: 0 0 10%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .article-name {
+    flex: 0 0 50%;
+  }
+  
+  .article-tags {
+    flex: 0 0 25%;
+  }
+  
+  .article-time {
+    flex: 0 0 25%;
+  }
+  
+  .article-type,
+  .article-size {
+    display: none;
+  }
+}
+</style>
