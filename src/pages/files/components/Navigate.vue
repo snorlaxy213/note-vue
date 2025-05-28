@@ -2,15 +2,15 @@
   <div v-loading.fullscreen.lock="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
     <el-row>
       <el-col :span="6">
-        <el-button plain size="mini" type="primary" @click="open('目录名称')"><i class="el-icon-folder-add"
-                                                                                 style="margin-right: 4px"></i>新建文件夹
+        <el-button plain size="mini" type="primary" @click="open('目录名称')">
+          <i class="el-icon-folder-add" style="margin-right: 4px"></i>新建文件夹
         </el-button>
-        <el-button plain size="mini" type="success" @click="open('文章名称')"><i class="el-icon-document-add"
-                                                                                 style="margin-right: 4px"></i>新建笔记
+        <el-button plain size="mini" type="success" @click="open('文章名称')">
+          <i class="el-icon-document-add" style="margin-right: 4px"></i>新建笔记
         </el-button>
 
-        <el-button plain size="mini" type="warning" @click="UploadMd()"><i class="el-icon-upload2"
-                                                                           style="margin-right: 4px"></i>上传md
+        <el-button plain size="mini" type="warning" @click="UploadMd()">
+          <i class="el-icon-upload2" style="margin-right: 4px"></i>上传md
         </el-button>
       </el-col>
     </el-row>
@@ -107,8 +107,7 @@ export default {
               title: value,
               FatherTitle: this.Nav[this.Nav.length - 1],
             },
-          })
-              .then((resp) => {
+          }).then((resp) => {
                 this.$message({
                   type: "success",
                   message: resp.data.msg,
@@ -140,8 +139,7 @@ export default {
               title: value,
               folder_title: this.Nav[this.Nav.length - 1],
             },
-          })
-              .then((resp) => {
+          }).then((resp) => {
                 this.$message({
                   type: "success",
                   message: resp.data.msg,
