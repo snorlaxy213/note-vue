@@ -135,7 +135,7 @@ export default {
       },
       tableData: [],
       Total: 0,
-      dialogVisible: false
+      editDialogVisible: false
     }
   },
   methods: {

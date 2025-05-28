@@ -105,7 +105,7 @@ export default {
         mkValue: "",
         id: null
       },
-      dialogVisible: false,
+      editDialogVisible: false,
     }
   },
   methods: {

@@ -96,7 +96,7 @@ export default {
         id: 0,
       },
 
-      dialogVisible: false,
+      editDialogVisible: false,
       articleView: null,
       loading: false,
       inputVisible: false,

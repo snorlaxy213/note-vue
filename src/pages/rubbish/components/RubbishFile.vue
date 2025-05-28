@@ -44,7 +44,7 @@ export default {
   data: function () {
     console.log(JSON.stringify(this.FileInfo))
     return {
-      dialogVisible: false
+      editDialogVisible: false
     }
   },
   methods: {

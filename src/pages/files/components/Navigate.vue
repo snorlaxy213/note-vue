@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
 
-    <!--        上传dig-->
+    <!--上传dig-->
     <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
       <el-upload ref="upload" :auto-upload="false" :http-request="ht" multiple>
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -38,7 +38,7 @@ export default {
     return {
       Nav: [],
       loading: false,
-      dialogVisible: false,
+      editDialogVisible: false,
     };
   },
   methods: {
@@ -179,6 +179,7 @@ export default {
         }
       });
     },
+
     ChangeNav(title) {
       this.loading = true;
       request({

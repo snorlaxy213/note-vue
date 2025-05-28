@@ -5,25 +5,27 @@
       <el-col :span="10">
         <el-tooltip effect="light" placement="right">
           <div slot="content">
-            <el-link icon="el-icon-edit" @click="dialogVisible = true"></el-link>
+            <el-link icon="el-icon-edit" @click="editDialogVisible = true"></el-link>
+
             <el-divider direction="vertical"></el-divider>
+
             <el-link class="el-icon-delete" @click="Delete"></el-link>
           </div>
 
           <el-link style="font-size: 14px" @click="AccessFolder">
-            <i class="el-icon-folder" style="margin-right: 1px"></i>
-            <i class="folder-text">{{ FolderInfo.title }}</i>
+            <i class="el-icon-folder" style="margin-right: 5px"></i>
+            <i>{{ FolderInfo.title }}</i>
           </el-link>
         </el-tooltip>
       </el-col>
 
       <!--编辑框-->
-      <el-dialog :visible.sync="dialogVisible" title="修改" width="30%">
+      <el-dialog :visible.sync="editDialogVisible" title="修改文件夹名称" width="30%">
         <el-input v-model="FolderInfo.title"></el-input>
         <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button plain type="primary" @click="Update">确 定</el-button>
-                </span>
+            <el-button @click="editDialogVisible = false">取 消</el-button>
+            <el-button plain type="primary" @click="Update">确 定</el-button>
+        </span>
       </el-dialog>
 
       <!--标签-->
@@ -33,7 +35,7 @@
 
       <!--日期-->
       <el-col :span="4">
-        <i class="el-icon-date" style="color: gainsboro">{{
+        <i class="el-icon-date">{{
             FolderInfo.updated_at.slice(0, 16)
           }}</i>
       </el-col>
@@ -55,7 +57,7 @@ export default {
   data: function () {
     return {
       loading: false,
-      dialogVisible: false,
+      editDialogVisible: false,
     };
   },
   methods: {
@@ -86,15 +88,17 @@ export default {
         });
         console.log(resp.status); //防止报错
         this.loading = false;
-        this.dialogVisible = false;
+        this.editDialogVisible = false;
       });
     },
+
     AccessFolder() {
       this.loading = true;
       request({
         url: "/folder/sub_file/" + 1,
         params: {
           title: this.FolderInfo.title,
+          folder_id: this.FolderInfo.id,
         },
       }).then((resp) => {
         this.$emit(
@@ -112,8 +116,5 @@ export default {
 </script>
 
 <style scoped>
-.folder-text {
-  font-size: 14px;
-  color: #606266;
-}
+
 </style>
