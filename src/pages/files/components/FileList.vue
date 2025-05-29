@@ -10,7 +10,7 @@
           :class="{ 'breadcrumb-clickable': index < Nav.length - 1 }"
           @click.native="navigateToPath(navItem, index)">
           <i class="el-icon-folder-opened" v-if="index === 0"></i>
-          {{ navItem || 'Home' }}
+          {{ navItem }}
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -100,7 +100,7 @@ export default {
       loading: false,
       FolderList: [],
       ArticleList: [],
-      Nav: ['Home'],
+      Nav: [], // 初始化为空数组
       currentPage: 1,
       Total: 1,
       currentTitle: "Home",
@@ -115,10 +115,28 @@ export default {
           this.FolderList = resp.data.Folders;
           this.ArticleList = resp.data.Articles;
           this.loading = false;
-          this.Nav = resp.data.Nav || ['Home'];
+          
+          // 处理导航数据，过滤掉空值和重复的 'Home'
+          let navData = resp.data.Nav || [];
+          
+          // 如果导航数据为空或者第一个元素不是有效值，设置为 ['Home']
+          if (!navData || navData.length === 0 || !navData[0]) {
+            this.Nav = ['Home'];
+          } else {
+            // 过滤掉空字符串和重复的 'Home'
+            this.Nav = navData.filter((item, index) => {
+              return item && item.trim() !== '' && !(item === 'Home' && index > 0);
+            });
+            
+            // 如果过滤后为空，设置默认值
+            if (this.Nav.length === 0) {
+              this.Nav = ['Home'];
+            }
+          }
+          
           this.Total = Number(resp.data.Total);
           if (this.$parent.$refs.navigate) {
-            this.$parent.$refs.navigate.$data.Nav = [...resp.data.Nav].reverse();
+            this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
           }
           this.loading = false;
         });
