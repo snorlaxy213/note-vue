@@ -2,18 +2,10 @@
   <div class="rubbish-file-item">
     <!-- 文件名列 -->
     <div class="file-name">
-      <el-tooltip effect="light" placement="right">
-        <div slot="content">
-          <el-link icon="el-icon-refresh-right" @click="Recover">恢复</el-link>
-          <el-divider direction="vertical"></el-divider>
-          <el-link class="el-icon-info" @click="dialogVisible=true">预览</el-link>
-        </div>
-
-        <el-link style="font-size: 14px" @click="dialogVisible=true">
-          <i class="el-icon-document" style="margin-right: 6px; color: #f56c6c; font-size: 16px;"></i>
-          <span style="font-weight: 500;">{{ FileInfo.title }}</span>
-        </el-link>
-      </el-tooltip>
+      <el-link style="font-size: 14px" @click="dialogVisible=true">
+        <i class="el-icon-document" style="margin-right: 6px; color: #f56c6c; font-size: 16px;"></i>
+        <span style="font-weight: 500;">{{ FileInfo.title }}</span>
+      </el-link>
     </div>
 
     <!-- 状态列 -->
