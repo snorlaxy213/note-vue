@@ -5,7 +5,8 @@
         <el-button plain size="mini" type="primary" @click="open('目录名称')">
           <i class="el-icon-folder-add" style="margin-right: 4px"></i>新建文件夹
         </el-button>
-        <el-button plain size="mini" type="success" @click="open('文章名称')">
+        
+        <el-button plain size="mini" type="success" @click="goToWrite">
           <i class="el-icon-document-add" style="margin-right: 4px"></i>新建笔记
         </el-button>
 
@@ -94,13 +95,18 @@ export default {
       this.dialogVisible = true;
     },
 
+    // 新增方法：直接跳转到写作页面
+    goToWrite() {
+      this.$router.push("/write");
+    },
+
     open(title) {
-      this.$prompt(title, "创建", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-      }).then(({value}) => {
-        this.loading = true;
-        if (title === "目录名称") {
+      if (title === "目录名称") {
+        this.$prompt(title, "创建", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        }).then(({value}) => {
+          this.loading = true;
           request({
             url: "/folder/add",
             params: {
@@ -131,54 +137,10 @@ export default {
                   message: err,
                 });
               });
-        } else if (title === "文章名称") {
-          request({
-            method: "post",
-            url: "/article/add",
-            data: {
-              title: value,
-              folder_title: this.Nav[this.Nav.length - 1],
-            },
-          }).then((resp) => {
-                this.$message({
-                  type: "success",
-                  message: resp.data.msg,
-                });
-                this.loading = false;
-                //注意params传递数据要与name属性一起 不能与path一起
-                this.$confirm("文件已经创建,是否前往创作?", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "success",
-                }).then(() => {
-                  this.$router.push({
-                    name: "write",
-                    params: {
-                      article: resp.data.data,
-                    },
-                  });
-                });
-
-                this.$parent.$refs.FileList.Total++;
-                if (
-                    this.$parent.$refs.FileList.currentPage <
-                    Math.ceil(this.$parent.$refs.FileList.Total / 13)
-                ) {
-                  this.$parent.$refs.FileList.handleCurrentChange(
-                      Math.ceil(this.$parent.$refs.FileList.Total / 13)
-                  );
-                } else {
-                  this.$parent.$refs.FileList.handleCurrentChange(
-                      this.$parent.$refs.FileList.currentPage
-                  );
-                }
-              })
-              .catch(() => {
-
-              });
-        }
       });
-    },
+    }
+    // 移除了原来的 "文章名称" 相关逻辑
+  },
 
     ChangeNav(title) {
       this.loading = true;
