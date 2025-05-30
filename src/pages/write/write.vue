@@ -101,14 +101,10 @@ export default {
         method: 'post',
         data: this.article
       }).then(resp => {
-        this.$message({
-          type: "warning",
-          message: resp.data.msg
-        });
-
+        // 移除消息提示，静默保存
+        console.log('文章已自动保存:', resp.data.msg);
       })
     }
-
   },
 
 

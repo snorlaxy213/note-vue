@@ -17,7 +17,7 @@
     </el-row>
 
     <!--上传dig-->
-    <el-dialog :visible.sync="dialogVisible" title="提示" width="30%">
+    <el-dialog :visible.sync="editDialogVisible" title="提示" width="30%">
       <el-upload ref="upload" :auto-upload="false" :http-request="ht" multiple>
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
         <el-button size="small" style="margin-left: 10px" type="success" @click="submitUpload">上传到服务器
@@ -57,7 +57,7 @@ export default {
             this.$parent.$refs.FileList.currentPage
         );
       }
-      this.dialogVisible = false;
+      this.editDialogVisible = false;
     },
 
     ht(files) {
@@ -92,7 +92,7 @@ export default {
       this.$refs.upload.submit();
     },
     UploadMd() {
-      this.dialogVisible = true;
+      this.editDialogVisible = true;
     },
 
     // 新增方法：直接跳转到写作页面
