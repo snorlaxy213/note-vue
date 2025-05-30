@@ -109,7 +109,7 @@ export default {
 
   mounted() {
     request({
-      url: "/folder/sub_file/" + 1,
+      url: "/folder/sub_file/" + this.currentPage, // 使用当前页码
     })
         .then((resp) => {
           this.FolderList = resp.data.Folders;
@@ -149,7 +149,7 @@ export default {
         // 点击的不是最后一个路径项，执行导航
         this.loading = true;
         request({
-          url: "/folder/sub_file/1",
+          url: "/folder/sub_file/" + this.currentPage, // 使用当前页码
           params: {
             title: navItem,
           },
@@ -158,7 +158,7 @@ export default {
           this.ArticleList = resp.data.Articles;
           this.Nav = resp.data.Nav || ['Home'];
           this.Total = Number(resp.data.Total);
-          this.currentPage = 1;
+          this.currentPage = 1; // 导航时重置为第一页
           this.loading = false;
           
           // 更新导航栏

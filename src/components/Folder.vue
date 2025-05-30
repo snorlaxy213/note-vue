@@ -96,7 +96,7 @@ export default {
     AccessFolder() {
       this.loading = true;
       request({
-        url: "/folder/sub_file/" + 1,
+        url: "/folder/sub_file/" + 1, // 点击文件夹时总是从第一页开始
         params: {
           title: this.FolderInfo.title,
           folder_id: this.FolderInfo.id,

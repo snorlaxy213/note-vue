@@ -183,7 +183,7 @@ export default {
     ChangeNav(title) {
       this.loading = true;
       request({
-        url: "/folder/sub_file/" + 1,
+        url: "/folder/sub_file/" + 1, // 导航时从第一页开始
         params: {
           title: title,
         },
