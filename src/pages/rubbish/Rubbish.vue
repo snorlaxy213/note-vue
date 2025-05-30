@@ -38,7 +38,7 @@
 
       <!-- 文件列表 -->
       <div class="rubbish-file-list">
-        <rubbish-file v-for="f in ArticleList" :key="f.id" :file-info="f" @Recover="Recover"></rubbish-file>
+        <rubbish-file v-for="f in ArticleList" :key="f.id" :file-info="f" @Recover="Recover" @PermanentDelete="PermanentDelete"></rubbish-file>
       </div>
 
       <!-- 空状态 -->
@@ -112,6 +112,19 @@ export default {
       })
     },
 
+    // 添加永久删除单个文件的方法
+    PermanentDelete(id) {
+      // 从列表中移除被永久删除的文件
+      for (let i = 0; i < this.ArticleList.length; i++) {
+        if (this.ArticleList[i].id === id) {
+          this.ArticleList.splice(i, 1);
+          break;
+        }
+      }
+      // 更新计数
+      this.Count = this.ArticleList.length;
+    },
+    
     ForeverDelete() {
       this.$confirm('此操作将永久删除所有回收站文件, 是否继续?', '提示', {
         confirmButtonText: '确定',

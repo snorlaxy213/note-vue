@@ -26,6 +26,7 @@
     <!-- 操作列 -->
     <div class="file-actions">
       <el-button size="mini" type="success" icon="el-icon-refresh-right" @click="Recover">恢复</el-button>
+      <el-button size="mini" type="danger" icon="el-icon-delete" @click="PermanentDelete">永久删除</el-button>
     </div>
 
     <!-- 预览对话框 -->
@@ -74,6 +75,36 @@ export default {
 
     Recover() {
       this.$emit("Recover", this.FileInfo.id)
+    },
+    
+    // 永久删除文章
+    PermanentDelete() {
+      this.$confirm('此操作将永久删除该文章，无法恢复，是否继续？', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        request({
+          url: "/article/clear_rubbish/" + this.FileInfo.id,
+          method: "GET"
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: "文章已永久删除"
+          });
+          this.$emit("PermanentDelete", this.FileInfo.id);
+        }).catch(() => {
+          this.$message({
+            type: "error",
+            message: "删除失败，请重试"
+          });
+        });
+      }).catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消删除"
+        });
+      });
     }
   }
 }
@@ -133,7 +164,7 @@ export default {
 }
 
 .file-actions {
-  flex: 0 0 15%;
+  flex: 0 0 20%; /* 从15%增加到20%以容纳两个按钮 */
   display: flex;
   align-items: center;
   gap: 6px;
