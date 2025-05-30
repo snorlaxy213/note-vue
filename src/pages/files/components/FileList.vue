@@ -43,6 +43,10 @@
           <i class="el-icon-coin"></i>
           <span>大小</span>
         </div>
+        <div class="header-item action-column">
+          <i class="el-icon-setting"></i>
+          <span>操作</span>
+        </div>
       </div>
 
       <!-- 文件夹列表 -->
@@ -306,7 +310,7 @@ export default {
 }
 
 .name-column {
-  flex: 0 0 40%;
+  flex: 0 0 30%;
 }
 
 .tag-column {
@@ -314,7 +318,7 @@ export default {
 }
 
 .time-column {
-  flex: 0 0 20%;
+  flex: 0 0 15%;
 }
 
 .type-column {
@@ -323,6 +327,10 @@ export default {
 
 .size-column {
   flex: 0 0 10%;
+}
+
+.action-column {
+  flex: 0 0 15%;
 }
 
 /* 文件夹和文件列表 */

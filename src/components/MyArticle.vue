@@ -3,21 +3,11 @@
     <div class="article-item">
       <!-- 文件名列 -->
       <div class="article-name">
-        <el-tooltip effect="light" placement="right">
-          <div slot="content">
-            <el-link icon="el-icon-edit" @click="EditArticle"></el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-link class="el-icon-delete" @click="DeleteArticle"></el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-link class="el-icon-download" @click="DownLoad(ArticleInfo)"></el-link>
-          </div>
-
-          <el-link style="font-weight: bolder; font-size: 14px" target="_blank"
-                   @click="GetArticleInfo(ArticleInfo.id)">
-            <i class="el-icon-document" style="margin-right: 6px; color: #666; font-size: 16px;"></i>
-            {{ ArticleInfo.title }}
-          </el-link>
-        </el-tooltip>
+        <el-link style="font-weight: bolder; font-size: 14px" target="_blank"
+                 @click="GetArticleInfo(ArticleInfo.id)">
+          <i class="el-icon-document" style="margin-right: 6px; color: #666; font-size: 16px;"></i>
+          {{ ArticleInfo.title }}
+        </el-link>
       </div>
 
       <!-- 标签列 -->
@@ -52,24 +42,31 @@
               class="button-new-tag"
               size="small"
               @click="showInput">
-            +
+            + 新标签
           </el-button>
         </span>
       </div>
 
       <!-- 修改时间列 -->
       <div class="article-time">
-        <span>{{ ArticleInfo.updated_at }}</span>
+        <span>{{ ArticleInfo.updated_at.slice(0, 16) }}</span>
       </div>
 
       <!-- 类型列 -->
       <div class="article-type">
-        <span>笔记</span>
+        <span>文档</span>
       </div>
 
       <!-- 大小列 -->
       <div class="article-size">
-        <span>{{ formatFileSize(ArticleInfo.size || 0) }}</span>
+        <span>{{ ArticleInfo.size || '-' }}</span>
+      </div>
+
+      <!-- 操作列 -->
+      <div class="article-actions">
+        <el-button size="mini" icon="el-icon-edit" @click="EditArticle" title="编辑"></el-button>
+        <el-button size="mini" type="danger" icon="el-icon-delete" @click="DeleteArticle" title="删除"></el-button>
+        <el-button size="mini" icon="el-icon-download" @click="DownLoad(ArticleInfo)" title="下载"></el-button>
       </div>
     </div>
   </div>
@@ -257,7 +254,7 @@ export default {
 }
 
 .article-name {
-  flex: 0 0 40%;
+  flex: 0 0 30%;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -271,7 +268,7 @@ export default {
 }
 
 .article-time {
-  flex: 0 0 20%;
+  flex: 0 0 15%;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -295,6 +292,13 @@ export default {
   gap: 6px;
   color: #666;
   font-size: 14px;
+}
+
+.article-actions {
+  flex: 0 0 15%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .input-new-tag {
@@ -326,7 +330,8 @@ export default {
   }
   
   .article-type,
-  .article-size {
+  .article-size,
+  .article-actions {
     display: none;
   }
 }

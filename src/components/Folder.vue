@@ -3,18 +3,10 @@
     <div class="folder-item">
       <!-- 文件名列 -->
       <div class="folder-name">
-        <el-tooltip effect="light" placement="right">
-          <div slot="content">
-            <el-link icon="el-icon-edit" @click="editDialogVisible = true"></el-link>
-            <el-divider direction="vertical"></el-divider>
-            <el-link class="el-icon-delete" @click="Delete"></el-link>
-          </div>
-
-          <el-link style="font-size: 14px" @click="AccessFolder">
-            <i class="el-icon-folder" style="margin-right: 6px; color: #409eff; font-size: 16px;"></i>
-            <span style="font-weight: 500;">{{ FolderInfo.title }}</span>
-          </el-link>
-        </el-tooltip>
+        <el-link style="font-size: 14px" @click="AccessFolder">
+          <i class="el-icon-folder" style="margin-right: 6px; color: #409eff; font-size: 16px;"></i>
+          <span style="font-weight: 500;">{{ FolderInfo.title }}</span>
+        </el-link>
       </div>
 
       <!-- 标签列 -->
@@ -35,6 +27,12 @@
       <!-- 大小列 -->
       <div class="folder-size">
         <span>-</span>
+      </div>
+
+      <!-- 操作列 -->
+      <div class="folder-actions">
+        <el-button size="mini" icon="el-icon-edit" @click="editDialogVisible = true" title="编辑"></el-button>
+        <el-button size="mini" type="danger" icon="el-icon-delete" @click="Delete" title="删除"></el-button>
       </div>
     </div>
 
@@ -133,12 +131,8 @@ export default {
   border-radius: 4px;
 }
 
-.folder-item:last-child {
-  border-bottom: none;
-}
-
 .folder-name {
-  flex: 0 0 40%;
+  flex: 0 0 30%;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -152,7 +146,7 @@ export default {
 }
 
 .folder-time {
-  flex: 0 0 20%;
+  flex: 0 0 15%;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -176,6 +170,17 @@ export default {
   gap: 6px;
   color: #666;
   font-size: 14px;
+}
+
+.folder-actions {
+  flex: 0 0 15%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.folder-item:last-child {
+  border-bottom: none;
 }
 
 /* 响应式设计 */

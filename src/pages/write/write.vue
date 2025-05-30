@@ -5,8 +5,6 @@
        element-loading-text="拼命加载中"
        style="padding-left: 1%;"
   >
-
-
     <!--编辑器-->
     <el-col :span="21" style="padding-right: 1%;">
       <el-row>
