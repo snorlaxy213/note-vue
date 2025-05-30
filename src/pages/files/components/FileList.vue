@@ -281,12 +281,6 @@ export default {
   color: #66b1ff;
 }
 
-/* 文件列表内容 */
-.file-list-content {
-  min-height: 400px;
-  background: #fff;
-}
-
 /* 表头样式 - 纯白色 */
 .file-header {
   display: flex;
@@ -331,6 +325,12 @@ export default {
 
 .action-column {
   flex: 0 0 15%;
+}
+
+/* 文件列表内容 */
+.file-list-content {
+  min-height: 400px;
+  background: #fff;
 }
 
 /* 文件夹和文件列表 */
@@ -400,7 +400,8 @@ export default {
   }
   
   .type-column,
-  .size-column {
+  .size-column,
+  .action-column {
     display: none;
   }
 }
