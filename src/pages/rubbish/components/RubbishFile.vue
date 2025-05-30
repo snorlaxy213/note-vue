@@ -2,7 +2,7 @@
   <div class="rubbish-file-item">
     <!-- 文件名列 -->
     <div class="file-name">
-      <el-link style="font-size: 14px" @click="dialogVisible=true">
+      <el-link style="font-size: 14px" @click="previewArticle">
         <i class="el-icon-document" style="margin-right: 6px; color: #f56c6c; font-size: 16px;"></i>
         <span style="font-weight: 500;">{{ FileInfo.title }}</span>
       </el-link>
@@ -34,21 +34,44 @@
         :title="FileInfo.title"
         width="90%"
         class="preview-dialog">
-      <div v-html="FileInfo.mkHtml" class="preview-content"></div>
+      <pre class="preview-content">{{ articleContent }}</pre>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import request from "@/network/request";
+
 export default {
   name: "RubbishFile",
   props: ["FileInfo"],
   data: function () {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      articleContent: '',
+      loading: false
     }
   },
   methods: {
+    // 预览文章
+    previewArticle() {
+      this.loading = true;
+      request({
+        url: "/article/get/" + this.FileInfo.id,
+      }).then((resp) => {
+        // 直接使用原始Markdown文本
+        this.articleContent = resp.data.mkValue || '暂无内容';
+        this.dialogVisible = true;
+        this.loading = false;
+      }).catch(() => {
+        this.$message({
+          type: "error",
+          message: "获取文章内容失败"
+        });
+        this.loading = false;
+      });
+    },
+
     Recover() {
       this.$emit("Recover", this.FileInfo.id)
     }
