@@ -51,7 +51,8 @@
             v-for="j in FolderList"
             :key="j.id"
             :folder-info="j"
-            @AccessFolder="handleAccessFolder">
+            @AccessFolder="handleAccessFolder"
+            @DeleteFolder="DeleteFolder">
         </folder>
       </div>
 
@@ -219,6 +220,25 @@ export default {
         this.ArticleList = resp.data.Articles;
         this.loading = false;
       });
+    },
+
+    // 处理删除文件夹事件
+    DeleteFolder(folderId) {
+      // 从文件夹列表中移除已删除的文件夹
+      for (let i = 0; i < this.FolderList.length; i++) {
+        if (this.FolderList[i].id === folderId) {
+          this.FolderList.splice(i, 1);
+          break;
+        }
+      }
+      
+      // 更新总数
+      this.Total--;
+      
+      // 如果当前页没有数据了，跳转到上一页
+      if (this.FolderList.length === 0 && this.ArticleList.length === 0 && this.currentPage > 1) {
+        this.handleCurrentChange(this.currentPage - 1);
+      }
     },
   },
   computed: {},
