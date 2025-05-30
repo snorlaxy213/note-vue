@@ -47,10 +47,10 @@ export default {
       this.$parent.$refs.FileList.Total++;
       if (
           this.$parent.$refs.FileList.currentPage <
-          Math.ceil(this.$parent.$refs.FileList.Total / 13)
+          Math.ceil(this.$parent.$refs.FileList.Total / 10)
       ) {
         this.$parent.$refs.FileList.handleCurrentChange(
-            Math.ceil(this.$parent.$refs.FileList.Total / 13)
+            Math.ceil(this.$parent.$refs.FileList.Total / 10)
         );
       } else {
         this.$parent.$refs.FileList.handleCurrentChange(
@@ -121,7 +121,7 @@ export default {
                 this.loading = false;
                 this.$parent.$refs.FileList.FolderList.push(resp.data.data);
                 this.$parent.$refs.FileList.Total++;
-                if (this.$parent.$refs.FileList.FolderList.length > 13) {
+                if (this.$parent.$refs.FileList.FolderList.length > 10) {
                   this.$parent.$refs.FileList.handleCurrentChange(
                       this.$parent.$refs.FileList.currentPage + 1
                   );

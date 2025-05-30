@@ -71,7 +71,7 @@
         <el-pagination 
           :current-page="currentPage" 
           :hide-on-single-page="false" 
-          :page-size="13" 
+          :page-size="10" 
           :total="Total"
           layout="total, prev, pager, next, jumper" 
           @current-change="handleCurrentChange">
@@ -195,7 +195,7 @@ export default {
       }
 
       this.Total--;
-      if (this.Total % 13 === 0) {
+      if (this.Total % 10 === 0) {
         this.$parent.$refs.FileList.handleCurrentChange(
             this.$parent.$refs.FileList.currentPage - 1
         );
