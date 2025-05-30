@@ -66,4 +66,18 @@ export default {
   border-right: 1px solid #e6e6e6;
 }
 
+/* 加深图标颜色 */
+.sidebar-menu .el-menu-item i {
+  color: #000000 !important; /* 使用Element UI的主色调 */
+}
+
+/* 鼠标悬停时的图标颜色 */
+.sidebar-menu .el-menu-item:hover i {
+  color: #66b1ff !important; /* 悬停时稍微亮一些 */
+}
+
+/* 激活状态的图标颜色 */
+.sidebar-menu .el-menu-item.is-active i {
+  color: #409EFF !important; /* 激活状态保持主色调 */
+}
 </style>
