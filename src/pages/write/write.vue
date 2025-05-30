@@ -24,25 +24,20 @@
                       @imgDel="ImgDel"
                       @save="Save"/>
       </el-row>
-      <el-row style="text-align: center">
-        <el-link type="success">感谢使用</el-link>
-      </el-row>
+      
     </el-col>
 
-
-    <!--        编辑器侧边信息-->
+    <!--编辑器侧边信息-->
     <el-col :span="3" style="padding-top: 2%">
 
-      <!--            日期-->
+      <!--日期-->
       <div style="text-align: center">
         创建日期: <i class="el-icon-date" style="color: deepskyblue">{{ article.created_at }}</i><br>
         最近更新: <i class="el-icon-date" style="color: orange">{{ article.updated_at }}</i>
-
       </div>
       <el-divider></el-divider>
 
-
-      <!--          目录-->
+      <!--目录-->
       <div>
         目录:
         <el-cascader
@@ -52,28 +47,20 @@
             clearable
             filterable
         ></el-cascader>
-
-
       </div>
       <el-divider></el-divider>
 
-
-      <!--           保存-->
+      <!--保存-->
       <div style="text-align: center">
         <el-button type="success" @click="FinishSave">保存文章</el-button>
         <el-link @click="DeleteCache">清空</el-link>
       </div>
-
     </el-col>
-
   </div>
 </template>
 
 <script>
-
-
 import request from "@/network/request";
-
 
 export default {
   name: "write",
@@ -84,16 +71,24 @@ export default {
       this.article = this.$route.params.article;
     } else {
       this.loading = true;
+      // 设置当前日期
+      const currentDate = this.getCurrentDate();
       request({
         url: "/article/temp_get"
       }).then(resp => {
         this.article = resp.data.data;
+        // 如果后端返回的日期为空或默认值，则使用当前日期
+        if (!this.article.created_at || this.article.created_at === "0-0-0-0") {
+          this.article.created_at = currentDate;
+        }
+        if (!this.article.updated_at || this.article.updated_at === "0-0-0-0") {
+          this.article.updated_at = currentDate;
+        }
         this.loading = false;
       })
     }
-
-
   },
+
   beforeDestroy() {
     if (this.article.id !== 0 && this.article.id != null) {
       request({
@@ -107,10 +102,8 @@ export default {
     }
   },
 
-
   data: function () {
     return {
-
       loading: false,
       //目录
       options: [],
@@ -128,12 +121,8 @@ export default {
           }).then(resp => {
             resolve(resp.data.data);
           });
-
-
         }
-
       },
-
 
       article: {
         id: null,
@@ -144,13 +133,20 @@ export default {
         mkValue: "",
         folder_id: 0,
       },
-
-
     }
-
-
   },
+
   methods: {
+    // 获取当前日期
+    getCurrentDate() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    },
 
     //点击保存事件
     FinishSave() {
@@ -169,10 +165,10 @@ export default {
         this.loading = false
       })
     },
+
     //编辑器
     //保存 Ctrl+S回调
     Save(mkValue) {
-
       this.article.mkValue = mkValue;
       this.loading = true;
 
@@ -213,7 +209,6 @@ export default {
 
         this.$refs.md.$img2Url(pos, resp.data.data);
         this.loading = false
-
       }).catch(err => {
         this.$message({
           type: "error",
@@ -247,7 +242,6 @@ export default {
       })
     },
 
-
 //清空redis缓存
     DeleteCache() {
       request({
@@ -265,13 +259,9 @@ export default {
           dir_path: [],
           mkValue: "",
           folder_id: 0,
-
         }
-
       })
     }
-
-
   }
 }
 </script>
