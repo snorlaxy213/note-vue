@@ -97,4 +97,95 @@ note-vue/
 5. **访问应用**
    打开浏览器访问 http://localhost:9002
 
-   
+### 后端配置
+本项目需要配合后端服务使用：
+
+- 后端项目 : note-gin
+- 默认后端地址 : http://localhost:9000
+- API 前缀 : /api
+## 📱 功能模块
+### 1. 笔记编辑 (/write)
+- Markdown 实时预览
+- 自动保存功能
+- 文件夹分类
+- 标题和日期管理
+### 2. 文件管理 (/files)
+- 多标签页浏览
+- 文件夹树形结构
+- 文件搜索和过滤
+- 批量操作
+### 3. 回收站 (/rubbish)
+- 已删除文件列表
+- 文件恢复功能
+- 永久删除
+- 批量清空
+### 4. 书籍管理 (/mybook)
+- 个人书籍收藏
+- 阅读进度跟踪
+- 书籍信息展示
+- 分类管理
+### 5. 系统管理 (/manage)
+- 用户设置
+- 系统配置
+- 数据统计
+- 导入导出
+## 🛠️ 开发指南
+### 可用脚本
+### 代码规范
+- 使用 ESLint 进行代码检查
+- 遵循 Vue.js 官方风格指南
+- 组件命名采用 PascalCase
+- 文件命名采用 kebab-case
+### 构建配置
+项目使用 vue.config.js 进行构建配置：
+
+- 开发端口 : 9002
+- 代理配置 : /api -> http://localhost:9000
+- 关闭 ESLint : lintOnSave: false
+## 🐳 部署指南
+### 传统部署
+1. 构建项目
+2. 部署到服务器
+### Docker 部署
+1. 使用 Docker Compose
+2. 单独构建镜像
+### Nginx 配置
+项目包含了完整的 Nginx 配置文件 nginx.conf ，支持：
+
+- 静态文件服务
+- API 代理转发
+- Gzip 压缩
+- 缓存策略
+## 🔧 配置说明
+### 环境变量
+创建 .env.local 文件并配置以下变量：
+
+### 代理配置
+开发环境下，所有 /api 请求会被代理到后端服务器。生产环境需要配置 Nginx 反向代理。
+
+## 🤝 贡献指南
+1. Fork 本仓库
+2. 创建特性分支 ( git checkout -b feature/AmazingFeature )
+3. 提交更改 ( git commit -m 'Add some AmazingFeature' )
+4. 推送到分支 ( git push origin feature/AmazingFeature )
+5. 打开 Pull Request
+### 开发流程
+1. 确保代码通过 ESLint 检查
+2. 添加必要的测试用例
+3. 更新相关文档
+4. 确保构建成功
+## 📄 许可证
+本项目采用 MIT 许可证 - 查看 LICENSE 文件了解详情。
+
+## 🔗 相关链接
+- 后端项目 : note-gin
+- Vue.js 官方文档 : https://vuejs.org/
+- Element UI 文档 : https://element.eleme.io/
+- mavon-editor 文档 : https://github.com/hinesboy/mavonEditor
+## 📞 支持
+如果您在使用过程中遇到问题，请通过以下方式获取帮助：
+
+- 提交 Issue
+- 查看 开发计划
+- 联系维护者
+Made with ❤️ by the Note Vue Team
