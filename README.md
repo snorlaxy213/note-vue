@@ -37,14 +37,64 @@ Note Vue 是一个现代化的前后端分离笔记管理系统的前端部分�
 
 ### 项目结构
 
-前端地址：[https://github.com/biningo/note-vue](https://github.com/biningo/note-vue)
-后端地址：[https://github.com/biningo/note-gin](https://github.com/biningo/note-gin)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170439491.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170622303.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170455569.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020022817050670.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170515801.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170528381.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170547784.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170604671.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200228170654877.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDU4NDI5Mw==,size_16,color_FFFFFF,t_70)
+note-vue/
+├── public/                 # 静态资源
+├── src/
+│   ├── assets/            # 资源文件
+│   ├── components/        # 公共组件
+│   │   ├── Folder.vue     # 文件夹组件
+│   │   ├── MakedownShow.vue # Markdown 展示组件
+│   │   └── MyArticle.vue  # 文章组件
+│   ├── network/           # 网络请求
+│   │   └── request.js     # axios 配置
+│   ├── pages/             # 页面组件
+│   │   ├── book/          # 书籍管理
+│   │   ├── files/         # 文件管理
+│   │   ├── manage/        # 系统管理
+│   │   ├── rubbish/       # 回收站
+│   │   └── write/         # 编辑器
+│   ├── router/            # 路由配置
+│   ├── App.vue            # 根组件
+│   └── main.js            # 入口文件
+├── deploy/                # 部署脚本
+├── .env.example           # 环境变量示例
+├── docker-compose.yml     # Docker 配置
+├── nginx.conf             # Nginx 配置
+└── vue.config.js          # Vue 构建配置
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js >= 14.0.0
+- npm >= 6.0.0 或 yarn >= 1.22.0
+- Git
+
+### 安装步骤
+
+1. **克隆项目**
+   ```bash
+   git clone <repository-url>
+   cd note-vue
+   ```
+2. **安装依赖**
+   ```bash
+    npm install
+    # 或
+    yarn install
+   ```
+3. **配置环境变量**
+   ```bash
+    cp .env.example .env.local
+    # 编辑 .env.local 文件，配置后端 API 地址
+   ```
+4. **启动开发服务器**
+   ```bash
+    npm run serve
+    # 或
+    yarn serve
+   ```
+5. **访问应用**
+   打开浏览器访问 http://localhost:9002
+
+   
