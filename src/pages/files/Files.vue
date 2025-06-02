@@ -44,9 +44,25 @@ export default {
       });
       this.editableTabsValue = newTabName;
     },
+    
+    // 判断tab是否可关闭
+    getTabClosable(item) {
+      // 如果不是首页，都可以关闭
+      if (item.title !== 'files') {
+        return true;
+      }
+      // 如果是首页，只有当它是唯一的tab时才不可关闭
+      return this.editableTabs.length > 1;
+    },
+    
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
+      
+      // 找到要删除的tab
+      let targetTab = tabs.find(tab => tab.name === targetName);
+      
+      // 如果当前激活的tab是要删除的tab，需要切换到其他tab
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -57,9 +73,24 @@ export default {
           }
         });
       }
-
-      this.editableTabsValue = activeName;
+      
+      // 删除tab
       this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+      
+      // 规则1：如果删除最后一个页签时，打开首页
+      if (this.editableTabs.length === 0) {
+        this.editableTabs = [
+          {
+            title: "files",
+            name: "1",
+            content: "files",
+          },
+        ];
+        this.editableTabsValue = "1";
+        this.tabIndex = 1;
+      } else {
+        this.editableTabsValue = activeName;
+      }
     },
   },
 
