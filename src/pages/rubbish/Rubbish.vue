@@ -7,11 +7,12 @@
       </el-button>
     </div>
 
-    <div class="rubbish-content" 
-         v-loading="loading"
-         element-loading-spinner="el-icon-loading"
-         element-loading-text="拼命加载中">
-      
+    <div
+      class="rubbish-content"
+      v-loading="loading"
+      element-loading-spinner="el-icon-loading"
+      element-loading-text="拼命加载中"
+    >
       <!-- 表头 -->
       <div class="file-header">
         <div class="header-item name-column">
@@ -38,11 +39,17 @@
 
       <!-- 文件列表 -->
       <div class="rubbish-file-list">
-        <rubbish-file v-for="f in ArticleList" :key="f.id" :file-info="f" @Recover="Recover" @PermanentDelete="PermanentDelete"></rubbish-file>
+        <rubbish-file
+          v-for="f in ArticleList"
+          :key="f.id"
+          :file-info="f"
+          @Recover="Recover"
+          @PermanentDelete="PermanentDelete"
+        ></rubbish-file>
       </div>
 
       <!-- 空状态 -->
-      <div v-if="ArticleList.length===0" class="empty-state">
+      <div v-if="ArticleList.length === 0" class="empty-state">
         <i class="el-icon-delete empty-icon"></i>
         <p class="empty-text">回收站为空</p>
         <p class="empty-hint">删除的文件会出现在这里</p>
@@ -52,64 +59,64 @@
 </template>
 
 <script>
-import RubbishFile from "@/pages/rubbish/components/RubbishFile";
-import request from "@/network/request";
+import RubbishFile from '@/pages/rubbish/components/RubbishFile';
+import request from '@/network/request';
 
 export default {
-  name: "Rubbish",
-  components: {RubbishFile},
+  name: 'Rubbish',
+  components: { RubbishFile },
 
   mounted() {
     this.loading = true;
     request({
-      url: "/article/rubbish",
+      url: '/article/rubbish'
     }).then(resp => {
       this.ArticleList = resp.data.items;
       if (this.ArticleList == null) {
-        this.ArticleList = []
+        this.ArticleList = [];
       }
       this.Count = resp.data.total;
-      this.loading = false
-    })
+      this.loading = false;
+    });
   },
 
   data: function () {
     return {
       loading: false,
-      keywords: "",
+      keywords: '',
       ArticleList: [],
       Count: 0
-    }
+    };
   },
 
   methods: {
     Recover(id) {
       this.loading = true;
       request({
-        url: "/article/recover",
+        url: '/article/recover',
         params: {
           id: id
         }
       }).then(resp => {
         if (resp.data.code === 500) {
           this.$message({
-            type: "warning",
+            type: 'warning',
             message: resp.data.msg
-          })
+          });
         } else {
           this.$message({
-            type: "success",
+            type: 'success',
             message: resp.data.msg
           });
 
           for (let i = 0; i < this.ArticleList.length; i++) {
             if (this.ArticleList[i].id === id) {
-              this.ArticleList.splice(i, 1)
+              this.ArticleList.splice(i, 1);
             }
           }
         }
-        this.loading = false
-      })
+        this.loading = false;
+      });
     },
 
     // 添加永久删除单个文件的方法
@@ -124,33 +131,35 @@ export default {
       // 更新计数
       this.Count = this.ArticleList.length;
     },
-    
+
     ForeverDelete() {
       this.$confirm('此操作将永久删除所有回收站文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.loading = true;
-        request({
-          url: "/article/clear_rubbish"
-        }).then(resp => {
-          this.$message({
-            type: "success",
-            message: resp.data.msg
+      })
+        .then(() => {
+          this.loading = true;
+          request({
+            url: '/article/clear_rubbish'
+          }).then(resp => {
+            this.$message({
+              type: 'success',
+              message: resp.data.msg
+            });
+            this.ArticleList = [];
+            this.loading = false;
           });
-          this.ArticleList = [];
-          this.loading = false
         })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
-      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -253,23 +262,23 @@ export default {
     font-size: 12px;
     padding: 12px 16px;
   }
-  
+
   .rubbish-toolbar {
     padding: 12px 16px;
   }
-  
+
   .name-column {
     flex: 0 0 45%;
   }
-  
+
   .tag-column {
     flex: 0 0 20%;
   }
-  
+
   .time-column {
     flex: 0 0 35%;
   }
-  
+
   .type-column,
   .action-column {
     display: none;

@@ -77,23 +77,22 @@ module.exports = {
 
     // 链式配置
     chainWebpack: config => {
-        // 预加载优化
-        config.plugin('preload').tap(options => {
-            options[0] = {
-                rel: 'preload',
-                include: 'initial',
-                fileBlacklist: [/\.map$/, /hot-update\.js$/]
-            };
-            return options;
-        });
-
-        // 预获取优化
-        config.plugin('prefetch').tap(options => {
-            options[0].fileBlacklist = options[0].fileBlacklist || [];
-            options[0].fileBlacklist.push(/chunk-vendors\..*\.js$/);
-            return options;
-        });
-
+        // 暂时注释掉预加载配置以解决启动问题
+        // config.plugin('preload').tap(options => {
+        //     options[0] = {
+        //         rel: 'preload',
+        //         include: 'initial',
+        //         fileBlacklist: [/\.map$/, /hot-update\.js$/]
+        //     };
+        //     return options;
+        // });
+        
+        // config.plugin('prefetch').tap(options => {
+        //     options[0].fileBlacklist = options[0].fileBlacklist || [];
+        //     options[0].fileBlacklist.push(/chunk-vendors\..*\.js$/);
+        //     return options;
+        // });
+        
         // 生产环境优化
         if (process.env.NODE_ENV === 'production') {
             // 移除console

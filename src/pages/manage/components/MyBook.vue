@@ -1,54 +1,36 @@
 <template>
   <div>
-    <el-page-header content="MyBook" @back="goBack">
-    </el-page-header>
+    <el-page-header content="MyBook" @back="goBack"> </el-page-header>
     <el-divider></el-divider>
 
     <el-row>
-
-
-      <el-button size="mini" type="success" @click="dialogVisible=true">添加书籍</el-button>
+      <el-button size="mini" type="success" @click="dialogVisible = true"
+        >添加书籍</el-button
+      >
       <el-table
-          ref="multipleTable"
-          v-loading="loading"
-          :data="tableData"
-          style="width: 100%"
-          tooltip-effect="dark">
-
-        <el-table-column
-            label="ID"
-            prop="id"
-            width="60"
-        >
-
-        </el-table-column>
-        <el-table-column
-            label="更新时间"
-            width="100"
-
-        >
+        ref="multipleTable"
+        v-loading="loading"
+        :data="tableData"
+        style="width: 100%"
+        tooltip-effect="dark"
+      >
+        <el-table-column label="ID" prop="id" width="60"> </el-table-column>
+        <el-table-column label="更新时间" width="100">
           <template slot-scope="scope">
             <el-link>{{ scope.row.updated_at.slice(0, 10) }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column
-            label="图书"
-            width="500">
+        <el-table-column label="图书" width="500">
           <template slot-scope="scope">
             <el-link>{{ scope.row.title }}【{{ scope.row.writer }}】</el-link>
           </template>
         </el-table-column>
-        <el-table-column
-            label="图片"
-            width="300"
-        >
+        <el-table-column label="图片" width="300">
           <template slot-scope="scope">
             <el-link :href="scope.row.img_url">{{ scope.row.img_url }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column
-            label="状态"
-            width="300">
+        <el-table-column label="状态" width="300">
           <template slot-scope="scope">
             <el-radio v-model="scope.row.status" label="在读">在读</el-radio>
             <el-radio v-model="scope.row.status" label="想读">想读</el-radio>
@@ -56,30 +38,25 @@
           </template>
         </el-table-column>
 
-
-        <el-table-column
-            label="操作"
-            width="">
+        <el-table-column label="操作" width="">
           <template slot-scope="scope">
-            <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
-            <el-button size="mini" type="primary" @click="Update(scope.row)">保存修改</el-button>
+            <el-button size="mini" type="danger" @click="Delete(scope.row)"
+              >删除</el-button
+            >
+            <el-button size="mini" type="primary" @click="Update(scope.row)"
+              >保存修改</el-button
+            >
           </template>
         </el-table-column>
-
-
       </el-table>
-
-
     </el-row>
 
     <el-dialog
-        v-loading="loading"
-        :visible.sync="dialogVisible"
-        title="Book"
-        width="50%"
-
+      v-loading="loading"
+      :visible.sync="dialogVisible"
+      title="Book"
+      width="50%"
     >
-
       Title:
       <el-input v-model="book.title"></el-input>
       Writer:
@@ -90,38 +67,36 @@
       <el-radio v-model="book.status" label="读完">读完</el-radio>
 
       <el-upload
-          :before-upload="UploadImg"
-
-          :show-file-list="false"
-          class="avatar-uploader"
+        :before-upload="UploadImg"
+        :show-file-list="false"
+        class="avatar-uploader"
       >
-        <img v-if="book.img_url" :src="book.img_url" class="avatar">
+        <img v-if="book.img_url" :src="book.img_url" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
 
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="AddBook">确 定</el-button>
-  </span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="AddBook">确 定</el-button>
+      </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
-import request from "@/network/request";
+import request from '@/network/request';
 
 export default {
-  name: "MyBook",
+  name: 'MyBook',
   mounted() {
     this.loading = true;
     request({
-      url: "/my/book/get/all"
+      url: '/my/book/get/all'
     }).then(resp => {
       this.tableData = resp.data.items;
       this.Total = resp.data.total;
       this.loading = false;
-    })
+    });
   },
   data() {
     return {
@@ -131,19 +106,19 @@ export default {
         title: '',
         writer: '',
         img_url: '',
-        status: '想读',
+        status: '想读'
       },
       tableData: [],
       Total: 0,
       editDialogVisible: false
-    }
+    };
   },
   methods: {
     goBack() {
       this.$router.push('/manage');
     },
     Delete(val) {
-      this.loading = true
+      this.loading = true;
       request({
         url: '/my/book/delete/' + val.id
       }).then(resp => {
@@ -151,9 +126,9 @@ export default {
           type: 'success',
           message: resp.data.msg
         });
-        this.loading = false
+        this.loading = false;
       });
-      location.reload()
+      location.reload();
     },
     Update(val) {
       this.loading = true;
@@ -167,7 +142,7 @@ export default {
           message: resp.data.msg
         });
         this.loading = false;
-      })
+      });
     },
     UploadImg(file) {
       let data = new FormData();
@@ -178,20 +153,17 @@ export default {
           'Content-Type': 'multipart/form-data'
         },
         method: 'post',
-        url: "/qiniu/img_upload",
+        url: '/qiniu/img_upload',
         data: data
       }).then(resp => {
         this.$message({
-          type: "success",
+          type: 'success',
           message: resp.data.msg
         });
 
         this.book.img_url = resp.data.data;
-        this.loading = false
-
-      })
-
-
+        this.loading = false;
+      });
     },
     AddBook() {
       this.loading = true;
@@ -205,14 +177,14 @@ export default {
           title: '',
           writer: '',
           img_url: '',
-          status: '想读',
+          status: '想读'
         };
         this.dialogVisible = false;
         this.loading = false;
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -225,7 +197,7 @@ export default {
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 
 .avatar-uploader-icon {

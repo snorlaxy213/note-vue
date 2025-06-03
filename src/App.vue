@@ -3,8 +3,16 @@
     <el-row>
       <!--侧边导航-->
       <el-col :span="1">
-        <el-menu :collapse="true" :default-active="navIndex" class="sidebar-menu">
-          <el-menu-item class="el-menu-item" index="write" @click="Link('write')">
+        <el-menu
+          :collapse="true"
+          :default-active="navIndex"
+          class="sidebar-menu"
+        >
+          <el-menu-item
+            class="el-menu-item"
+            index="write"
+            @click="Link('write')"
+          >
             <i class="el-icon-edit"></i>
             <span slot="title">Write</span>
           </el-menu-item>
@@ -35,9 +43,9 @@
       <el-col :span="23" style="padding: 10px">
         <!-- 添加路由缓存支持 -->
         <keep-alive>
-          <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath"/>
+          <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath" />
         </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive" :key="$route.fullPath"/>
+        <router-view v-if="!$route.meta.keepAlive" :key="$route.fullPath" />
       </el-col>
     </el-row>
   </div>
@@ -49,11 +57,11 @@ export default {
   data() {
     return {
       rate: null
-    }
+    };
   },
   methods: {
     Link(path) {
-      this.$router.push("/" + path)
+      this.$router.push('/' + path);
     }
   },
   computed: {
@@ -61,7 +69,7 @@ export default {
       return this.$route.name;
     }
   }
-}
+};
 </script>
 
 <style>
@@ -89,6 +97,6 @@ export default {
 
 /* 激活状态的图标颜色 */
 .sidebar-menu .el-menu-item.is-active i {
-  color: #409EFF !important;
+  color: #409eff !important;
 }
 </style>

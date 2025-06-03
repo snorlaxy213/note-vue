@@ -1,11 +1,18 @@
 <template>
-  <div v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
+  <div
+    v-loading="loading"
+    element-loading-spinner="el-icon-loading"
+    element-loading-text="拼命加载中"
+  >
     <div class="folder-item">
       <!-- 文件名列 -->
       <div class="folder-name">
         <el-link style="font-size: 14px" @click="AccessFolder">
-          <i class="el-icon-folder" style="margin-right: 6px; color: #409eff; font-size: 16px;"></i>
-          <span style="font-weight: 500;">{{ FolderInfo.title }}</span>
+          <i
+            class="el-icon-folder"
+            style="margin-right: 6px; color: #409eff; font-size: 16px"
+          ></i>
+          <span style="font-weight: 500">{{ FolderInfo.title }}</span>
         </el-link>
       </div>
 
@@ -31,13 +38,28 @@
 
       <!-- 操作列 -->
       <div class="folder-actions">
-        <el-button size="mini" icon="el-icon-edit" @click="editDialogVisible = true" title="编辑"></el-button>
-        <el-button size="mini" type="danger" icon="el-icon-delete" @click="Delete" title="删除"></el-button>
+        <el-button
+          size="mini"
+          icon="el-icon-edit"
+          @click="editDialogVisible = true"
+          title="编辑"
+        ></el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          icon="el-icon-delete"
+          @click="Delete"
+          title="删除"
+        ></el-button>
       </div>
     </div>
 
     <!--编辑框-->
-    <el-dialog :visible.sync="editDialogVisible" title="修改文件夹名称" width="30%">
+    <el-dialog
+      :visible.sync="editDialogVisible"
+      title="修改文件夹名称"
+      width="30%"
+    >
       <el-input v-model="FolderInfo.title"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -48,42 +70,42 @@
 </template>
 
 <script>
-import request from "@/network/request";
+import request from '@/network/request';
 
 export default {
-  name: "Folder",
-  props: ["FolderInfo"],
+  name: 'Folder',
+  props: ['FolderInfo'],
   data: function () {
     return {
       loading: false,
-      editDialogVisible: false,
+      editDialogVisible: false
     };
   },
   methods: {
     Delete() {
       this.loading = true;
       request({
-        url: "/folder/delete",
-        params: this.FolderInfo,
-      }).then((resp) => {
+        url: '/folder/delete',
+        params: this.FolderInfo
+      }).then(resp => {
         this.$message({
-          type: "success",
-          message: resp.data.msg,
+          type: 'success',
+          message: resp.data.msg
         });
 
-        this.$emit("DeleteFolder", resp.data.data);
+        this.$emit('DeleteFolder', resp.data.data);
         this.loading = false;
       });
     },
     Update() {
       this.loading = true;
       request({
-        url: "/folder/update",
-        params: this.FolderInfo,
-      }).then((resp) => {
+        url: '/folder/update',
+        params: this.FolderInfo
+      }).then(resp => {
         this.$message({
-          type: "success",
-          message: "修改成功: " + this.FolderInfo.title,
+          type: 'success',
+          message: '修改成功: ' + this.FolderInfo.title
         });
         console.log(resp.status); //防止报错
         this.loading = false;
@@ -94,23 +116,23 @@ export default {
     AccessFolder() {
       this.loading = true;
       request({
-        url: "/folder/sub_file/" + 1, // 点击文件夹时总是从第一页开始
+        url: '/folder/sub_file/' + 1, // 点击文件夹时总是从第一页开始
         params: {
           title: this.FolderInfo.title,
-          folder_id: this.FolderInfo.id,
-        },
-      }).then((resp) => {
+          folder_id: this.FolderInfo.id
+        }
+      }).then(resp => {
         this.$emit(
-            "AccessFolder",
-            resp.data.Folders,
-            resp.data.Articles,
-            resp.data.Nav.reverse(),
-            resp.data.Total
+          'AccessFolder',
+          resp.data.Folders,
+          resp.data.Articles,
+          resp.data.Nav.reverse(),
+          resp.data.Total
         );
         this.loading = false;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -188,15 +210,15 @@ export default {
   .folder-name {
     flex: 0 0 50%;
   }
-  
+
   .folder-tags {
     flex: 0 0 25%;
   }
-  
+
   .folder-time {
     flex: 0 0 25%;
   }
-  
+
   .folder-type,
   .folder-size {
     display: none;

@@ -24,7 +24,7 @@ export default {
       this.$router.push('/files');
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -1,14 +1,14 @@
 <template>
   <div class="file-list-container">
-    
     <!-- 导航路径 -->
     <div class="breadcrumb-container">
       <el-breadcrumb separator="/" class="nav-breadcrumb">
-        <el-breadcrumb-item 
-          v-for="(navItem, index) in Nav" 
+        <el-breadcrumb-item
+          v-for="(navItem, index) in Nav"
           :key="index"
           :class="{ 'breadcrumb-clickable': index < Nav.length - 1 }"
-          @click.native="navigateToPath(navItem, index)">
+          @click.native="navigateToPath(navItem, index)"
+        >
           <i class="el-icon-folder-opened" v-if="index === 0"></i>
           {{ navItem }}
         </el-breadcrumb-item>
@@ -16,11 +16,12 @@
     </div>
 
     <!-- 文件列表区域 -->
-    <div class="file-list-content" 
-         v-loading="loading"
-         element-loading-spinner="el-icon-loading"
-         element-loading-text="拼命加载中">
-      
+    <div
+      class="file-list-content"
+      v-loading="loading"
+      element-loading-spinner="el-icon-loading"
+      element-loading-text="拼命加载中"
+    >
       <!-- 表头 -->
       <div class="file-header">
         <div class="header-item name-column">
@@ -52,39 +53,48 @@
       <!-- 文件夹列表 -->
       <div class="folder-list">
         <folder
-            v-for="j in FolderList"
-            :key="j.id"
-            :folder-info="j"
-            @AccessFolder="handleAccessFolder"
-            @DeleteFolder="DeleteFolder">
+          v-for="j in FolderList"
+          :key="j.id"
+          :folder-info="j"
+          @AccessFolder="handleAccessFolder"
+          @DeleteFolder="DeleteFolder"
+        >
         </folder>
       </div>
 
       <!-- 文件列表 -->
       <div class="article-list">
         <my-article
-            v-for="(ArticleInfo, k) in ArticleList"
-            :key="k" 
-            :article-info="ArticleInfo"
-            @DeleteArticle="DeleteArticle"
-            @NewTab="NewTab">
+          v-for="(ArticleInfo, k) in ArticleList"
+          :key="k"
+          :article-info="ArticleInfo"
+          @DeleteArticle="DeleteArticle"
+          @NewTab="NewTab"
+        >
         </my-article>
       </div>
 
       <!-- 分页 -->
-      <div class="pagination-container" v-if="FolderList.length !== 0 || ArticleList.length !== 0">
-        <el-pagination 
-          :current-page="currentPage" 
-          :hide-on-single-page="false" 
-          :page-size="10" 
+      <div
+        class="pagination-container"
+        v-if="FolderList.length !== 0 || ArticleList.length !== 0"
+      >
+        <el-pagination
+          :current-page="currentPage"
+          :hide-on-single-page="false"
+          :page-size="10"
           :total="Total"
-          layout="total, prev, pager, next, jumper" 
-          @current-change="handleCurrentChange">
+          layout="total, prev, pager, next, jumper"
+          @current-change="handleCurrentChange"
+        >
         </el-pagination>
       </div>
 
       <!-- 空状态 -->
-      <div v-if="FolderList.length === 0 && ArticleList.length === 0" class="empty-state">
+      <div
+        v-if="FolderList.length === 0 && ArticleList.length === 0"
+        class="empty-state"
+      >
         <i class="el-icon-folder-opened empty-icon"></i>
         <p class="empty-text">这里还没有任何文件</p>
         <p class="empty-hint">点击上方按钮创建文件夹或笔记</p>
@@ -94,12 +104,12 @@
 </template>
 
 <script>
-import Folder from "@/components/Folder.vue";
-import MyArticle from "@/components/MyArticle";
-import request from "@/network/request";
+import Folder from '@/components/Folder.vue';
+import MyArticle from '@/components/MyArticle';
+import request from '@/network/request';
 
 export default {
-  name: "FileList",
+  name: 'FileList',
   data: function () {
     return {
       loading: false,
@@ -108,43 +118,42 @@ export default {
       Nav: [], // 初始化为空数组
       currentPage: 1,
       Total: 1,
-      currentTitle: "Home",
+      currentTitle: 'Home'
     };
   },
 
   mounted() {
     request({
-      url: "/folder/sub_file/" + this.currentPage, // 使用当前页码
-    })
-        .then((resp) => {
-          this.FolderList = resp.data.Folders;
-          this.ArticleList = resp.data.Articles;
-          this.loading = false;
-          
-          // 处理导航数据，过滤掉空值和重复的 'Home'
-          let navData = resp.data.Nav || [];
-          
-          // 如果导航数据为空或者第一个元素不是有效值，设置为 ['Home']
-          if (!navData || navData.length === 0 || !navData[0]) {
-            this.Nav = ['Home'];
-          } else {
-            // 过滤掉空字符串和重复的 'Home'
-            this.Nav = navData.filter((item, index) => {
-              return item && item.trim() !== '' && !(item === 'Home' && index > 0);
-            });
-            
-            // 如果过滤后为空，设置默认值
-            if (this.Nav.length === 0) {
-              this.Nav = ['Home'];
-            }
-          }
-          
-          this.Total = Number(resp.data.Total);
-          if (this.$parent.$refs.navigate) {
-            this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
-          }
-          this.loading = false;
+      url: '/folder/sub_file/' + this.currentPage // 使用当前页码
+    }).then(resp => {
+      this.FolderList = resp.data.Folders;
+      this.ArticleList = resp.data.Articles;
+      this.loading = false;
+
+      // 处理导航数据，过滤掉空值和重复的 'Home'
+      let navData = resp.data.Nav || [];
+
+      // 如果导航数据为空或者第一个元素不是有效值，设置为 ['Home']
+      if (!navData || navData.length === 0 || !navData[0]) {
+        this.Nav = ['Home'];
+      } else {
+        // 过滤掉空字符串和重复的 'Home'
+        this.Nav = navData.filter((item, index) => {
+          return item && item.trim() !== '' && !(item === 'Home' && index > 0);
         });
+
+        // 如果过滤后为空，设置默认值
+        if (this.Nav.length === 0) {
+          this.Nav = ['Home'];
+        }
+      }
+
+      this.Total = Number(resp.data.Total);
+      if (this.$parent.$refs.navigate) {
+        this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
+      }
+      this.loading = false;
+    });
   },
 
   methods: {
@@ -154,21 +163,23 @@ export default {
         // 点击的不是最后一个路径项，执行导航
         this.loading = true;
         request({
-          url: "/folder/sub_file/" + this.currentPage, // 使用当前页码
+          url: '/folder/sub_file/' + this.currentPage, // 使用当前页码
           params: {
-            title: navItem,
-          },
-        }).then((resp) => {
+            title: navItem
+          }
+        }).then(resp => {
           this.FolderList = resp.data.Folders;
           this.ArticleList = resp.data.Articles;
           this.Nav = resp.data.Nav || ['Home'];
           this.Total = Number(resp.data.Total);
           this.currentPage = 1; // 导航时重置为第一页
           this.loading = false;
-          
+
           // 更新导航栏
           if (this.$parent.$refs.navigate) {
-            this.$parent.$refs.navigate.$data.Nav = [...resp.data.Nav].reverse();
+            this.$parent.$refs.navigate.$data.Nav = [
+              ...resp.data.Nav
+            ].reverse();
           }
         });
       }
@@ -181,7 +192,7 @@ export default {
       this.Nav = nav || ['Home'];
       this.Total = Number(total);
       this.currentPage = 1;
-      
+
       // 更新导航栏
       if (this.$parent.$refs.navigate) {
         this.$parent.$refs.navigate.$data.Nav = [...nav].reverse();
@@ -189,7 +200,7 @@ export default {
     },
 
     NewTab(ArticleInfo) {
-      this.$emit("NewTab", ArticleInfo);
+      this.$emit('NewTab', ArticleInfo);
     },
 
     DeleteArticle(id) {
@@ -202,11 +213,11 @@ export default {
       this.Total--;
       if (this.Total % 10 === 0) {
         this.$parent.$refs.FileList.handleCurrentChange(
-            this.$parent.$refs.FileList.currentPage - 1
+          this.$parent.$refs.FileList.currentPage - 1
         );
       } else {
         this.$parent.$refs.FileList.handleCurrentChange(
-            this.$parent.$refs.FileList.currentPage
+          this.$parent.$refs.FileList.currentPage
         );
       }
     },
@@ -215,11 +226,11 @@ export default {
       this.currentPage = val;
       this.loading = true;
       request({
-        url: "/folder/sub_file/" + this.currentPage,
+        url: '/folder/sub_file/' + this.currentPage,
         params: {
-          title: this.Nav[this.Nav.length - 1],
-        },
-      }).then((resp) => {
+          title: this.Nav[this.Nav.length - 1]
+        }
+      }).then(resp => {
         this.FolderList = resp.data.Folders;
         this.ArticleList = resp.data.Articles;
         this.loading = false;
@@ -235,21 +246,25 @@ export default {
           break;
         }
       }
-      
+
       // 更新总数
       this.Total--;
-      
+
       // 如果当前页没有数据了，跳转到上一页
-      if (this.FolderList.length === 0 && this.ArticleList.length === 0 && this.currentPage > 1) {
+      if (
+        this.FolderList.length === 0 &&
+        this.ArticleList.length === 0 &&
+        this.currentPage > 1
+      ) {
         this.handleCurrentChange(this.currentPage - 1);
       }
-    },
+    }
   },
   computed: {},
   components: {
     Folder,
-    MyArticle,
-  },
+    MyArticle
+  }
 };
 </script>
 
@@ -382,23 +397,23 @@ export default {
     font-size: 12px;
     padding: 12px 16px;
   }
-  
+
   .breadcrumb-container {
     padding: 12px 16px;
   }
-  
+
   .name-column {
     flex: 0 0 50%;
   }
-  
+
   .tag-column {
     flex: 0 0 25%;
   }
-  
+
   .time-column {
     flex: 0 0 25%;
   }
-  
+
   .type-column,
   .size-column,
   .action-column {

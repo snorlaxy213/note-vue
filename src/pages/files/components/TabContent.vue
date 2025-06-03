@@ -11,20 +11,20 @@
 </template>
 
 <script>
-import Navigate from "./Navigate";
-import FileList from "./FileList";
+import Navigate from './Navigate';
+import FileList from './FileList';
 
 export default {
-  name: "TabContent",
+  name: 'TabContent',
   components: {
     Navigate,
-    FileList,
+    FileList
   },
   methods: {
     NewTab(ArticleInfo) {
-      this.$emit("NewTab", ArticleInfo);
-    },
-  },
+      this.$emit('NewTab', ArticleInfo);
+    }
+  }
 };
 </script>
 

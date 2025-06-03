@@ -1,0 +1,62 @@
+# 构建输出
+dist/
+build/
+
+# 依赖
+node_modules/
+
+# 压缩文件
+*.min.js
+*.min.css
+
+# 锁定文件
+package-lock.json
+yarn.lock
+
+# 日志文件
+*.log
+
+# 环境配置
+.env
+.env.*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE配置
+.vscode/
+.idea/
+
+# 临时文件
+.tmp/
+.cache/
+
+# 文档
+*.md
+README.md
+CHANGELOG.md
+
+# 配置文件
+*.config.js
+vue.config.js
+babel.config.js
+
+# 部署脚本
+deploy/
+
+# 静态资源
+public/
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.webp
+
+# 样式文件（如果使用CSS预处理器）
+*.css
+*.scss
+*.sass
+*.less

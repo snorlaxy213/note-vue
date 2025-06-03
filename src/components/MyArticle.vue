@@ -1,11 +1,21 @@
 <template>
-  <div v-loading.fullscreen.lock="loading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中">
+  <div
+    v-loading.fullscreen.lock="loading"
+    element-loading-spinner="el-icon-loading"
+    element-loading-text="拼命加载中"
+  >
     <div class="article-item">
       <!-- 文件名列 -->
       <div class="article-name">
-        <el-link style="font-weight: bolder; font-size: 14px" target="_blank"
-                 @click="GetArticleInfo(ArticleInfo.id)">
-          <i class="el-icon-document" style="margin-right: 6px; color: #666; font-size: 16px;"></i>
+        <el-link
+          style="font-weight: bolder; font-size: 14px"
+          target="_blank"
+          @click="GetArticleInfo(ArticleInfo.id)"
+        >
+          <i
+            class="el-icon-document"
+            style="margin-right: 6px; color: #666; font-size: 16px"
+          ></i>
           {{ ArticleInfo.title }}
         </el-link>
       </div>
@@ -15,33 +25,36 @@
         <span>
           <!-- 循环渲染所有标签 -->
           <el-tag
-              v-for="tag in this.ArticleInfo.tags"
-              :key="tag"
-              :disable-transitions="false"
-              closable
-              @close="handleClose(tag)"
-              size="small"
-              style="margin-right: 5px;">
+            v-for="tag in this.ArticleInfo.tags"
+            :key="tag"
+            :disable-transitions="false"
+            closable
+            @close="handleClose(tag)"
+            size="small"
+            style="margin-right: 5px"
+          >
             {{ tag }}
           </el-tag>
 
           <!-- 输入新标签的输入框（仅当 inputVisible 为 true 时显示） -->
           <el-input
-              v-if="inputVisible"
-              ref="saveTagInput"
-              v-model="inputValue"
-              class="input-new-tag"
-              size="small"
-              @blur="handleInputConfirm"
-              @keyup.enter.native="handleInputConfirm">
+            v-if="inputVisible"
+            ref="saveTagInput"
+            v-model="inputValue"
+            class="input-new-tag"
+            size="small"
+            @blur="handleInputConfirm"
+            @keyup.enter.native="handleInputConfirm"
+          >
           </el-input>
 
           <!-- 添加新标签按钮（仅当 inputVisible 为 false 时显示） -->
           <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showInput">
+            v-else
+            class="button-new-tag"
+            size="small"
+            @click="showInput"
+          >
             + 新标签
           </el-button>
         </span>
@@ -64,42 +77,58 @@
 
       <!-- 操作列 -->
       <div class="article-actions">
-        <el-button size="mini" icon="el-icon-edit" @click="EditArticle" title="编辑"></el-button>
-        <el-button size="mini" type="danger" icon="el-icon-delete" @click="DeleteArticle" title="删除"></el-button>
-        <el-button size="mini" icon="el-icon-download" @click="DownLoad(ArticleInfo)" title="下载"></el-button>
+        <el-button
+          size="mini"
+          icon="el-icon-edit"
+          @click="EditArticle"
+          title="编辑"
+        ></el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          icon="el-icon-delete"
+          @click="DeleteArticle"
+          title="删除"
+        ></el-button>
+        <el-button
+          size="mini"
+          icon="el-icon-download"
+          @click="DownLoad(ArticleInfo)"
+          title="下载"
+        ></el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import request from "@/network/request";
+import request from '@/network/request';
 
 export default {
-  name: "MyArticle",
-  props: ["ArticleInfo"],
+  name: 'MyArticle',
+  props: ['ArticleInfo'],
   mounted() {
-    if (this.ArticleInfo.tags[0] === "") {
+    if (this.ArticleInfo.tags[0] === '') {
       this.ArticleInfo.tags = [];
     }
   },
   updated() {
-    if (this.ArticleInfo.tags[0] === "") {
+    if (this.ArticleInfo.tags[0] === '') {
       this.ArticleInfo.tags = [];
     }
   },
   data: function () {
     return {
       articleDetail: {
-        mkValue: "",
-        title: "",
-        id: 0,
+        mkValue: '',
+        title: '',
+        id: 0
       },
       editDialogVisible: false,
       articleView: null,
       loading: false,
       inputVisible: false,
-      inputValue: "",
+      inputValue: ''
     };
   },
 
@@ -117,16 +146,16 @@ export default {
       console.log(val.id);
       this.loading = true;
       request({
-        url: "/article/download/" + val.id,
-        responseType: "blob", // 表明返回服务器返回的数据类型
-      }).then((res) => {
+        url: '/article/download/' + val.id,
+        responseType: 'blob' // 表明返回服务器返回的数据类型
+      }).then(res => {
         const blob = new Blob([res.data]);
-        const fileName = val.title + ".md";
-        if ("download" in document.createElement("a")) {
+        const fileName = val.title + '.md';
+        if ('download' in document.createElement('a')) {
           // 非IE下载
-          const elink = document.createElement("a");
+          const elink = document.createElement('a');
           elink.download = fileName;
-          elink.style.display = "none";
+          elink.style.display = 'none';
           elink.href = URL.createObjectURL(blob);
           document.body.appendChild(elink);
           elink.click();
@@ -145,30 +174,30 @@ export default {
       this.loading = true;
 
       request({
-        url: "/article/get/" + id,
-      }).then((resp) => {
+        url: '/article/get/' + id
+      }).then(resp => {
         this.articleDetail = resp.data;
         this.loading = false;
         //this.dialogVisible=true;
-        this.$emit("NewTab", this.articleDetail);
+        this.$emit('NewTab', this.articleDetail);
       });
     },
 
     DeleteArticle() {
       this.loading = true;
       request({
-        method: "get",
-        url: "/article/delete",
+        method: 'get',
+        url: '/article/delete',
         params: {
-          id: this.ArticleInfo.id,
-        },
-      }).then((resp) => {
+          id: this.ArticleInfo.id
+        }
+      }).then(resp => {
         this.$message({
-          type: "success",
-          message: resp.data.msg,
+          type: 'success',
+          message: resp.data.msg
         });
 
-        this.$emit("DeleteArticle", resp.data.data);
+        this.$emit('DeleteArticle', resp.data.data);
         this.loading = false;
       });
     },
@@ -176,12 +205,12 @@ export default {
     handleClose(tag) {
       this.ArticleInfo.tags.splice(this.ArticleInfo.tags.indexOf(tag), 1);
       request({
-        method: "post",
-        url: "/article/set_tag",
+        method: 'post',
+        url: '/article/set_tag',
         params: {
           id: this.ArticleInfo.id,
-          tags: this.ArticleInfo.tags.join(","),
-        },
+          tags: this.ArticleInfo.tags.join(',')
+        }
       });
     },
 
@@ -199,15 +228,15 @@ export default {
         this.ArticleInfo.tags.push(inputValue);
       }
       this.inputVisible = false;
-      this.inputValue = "";
+      this.inputValue = '';
 
       request({
-        method: "post",
-        url: "/article/set_tag",
+        method: 'post',
+        url: '/article/set_tag',
         params: {
           id: this.ArticleInfo.id,
-          tags: this.ArticleInfo.tags.join(","),
-        },
+          tags: this.ArticleInfo.tags.join(',')
+        }
       });
     },
 
@@ -215,20 +244,20 @@ export default {
       this.loading = true;
       //注意 axios是异步请求
       request({
-        url: "/article/edit/" + this.ArticleInfo.id,
-        method: "get",
-      }).then((resp) => {
+        url: '/article/edit/' + this.ArticleInfo.id,
+        method: 'get'
+      }).then(resp => {
         this.articleView = resp.data.data;
         this.$router.push({
-          name: "write",
+          name: 'write',
           params: {
-            article: this.articleView,
-          },
+            article: this.articleView
+          }
         });
         this.loading = false;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -320,15 +349,15 @@ export default {
   .article-name {
     flex: 0 0 50%;
   }
-  
+
   .article-tags {
     flex: 0 0 25%;
   }
-  
+
   .article-time {
     flex: 0 0 25%;
   }
-  
+
   .article-type,
   .article-size,
   .article-actions {

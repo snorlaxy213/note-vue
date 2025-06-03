@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export default function request(option) {
   return new Promise((resolve, reject) => {
@@ -7,10 +7,12 @@ export default function request(option) {
       timeout: 60 * 60 * 1000
     });
 
-    instance(option).then(res => {
-      resolve(res);
-    }).catch(err => {
-      reject(err);
-    });
+    instance(option)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 }

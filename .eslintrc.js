@@ -7,7 +7,8 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
-    'eslint:recommended'
+    'eslint:recommended',
+    'plugin:prettier/recommended'
   ],
   parserOptions: {
     parser: 'babel-eslint',
@@ -15,7 +16,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'vue'
+    'vue',
+    'prettier'
   ],
   rules: {
     // 基础规则
@@ -23,18 +25,21 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'no-unused-vars': 'warn',
     'no-undef': 'error',
-
-    // 代码风格规则
-    'indent': ['error', 2],
-    'quotes': ['error', 'single'],
-    'semi': ['error', 'always'],
-    'comma-dangle': ['error', 'never'],
-    'no-trailing-spaces': 'error',
-    'eol-last': 'error',
-    'space-before-function-paren': ['error', 'never'],
-    'object-curly-spacing': ['error', 'always'],
-    'array-bracket-spacing': ['error', 'never'],
-
+    
+    // Prettier集成
+    'prettier/prettier': 'error',
+    
+    // 移除与Prettier冲突的规则
+    // 'indent': 'off', // 由Prettier处理
+    // 'quotes': 'off', // 由Prettier处理
+    // 'semi': 'off', // 由Prettier处理
+    // 'comma-dangle': 'off', // 由Prettier处理
+    // 'no-trailing-spaces': 'off', // 由Prettier处理
+    // 'eol-last': 'off', // 由Prettier处理
+    // 'space-before-function-paren': 'off', // 由Prettier处理
+    // 'object-curly-spacing': 'off', // 由Prettier处理
+    // 'array-bracket-spacing': 'off', // 由Prettier处理
+    
     // Vue 特定规则
     'vue/no-unused-components': 'warn',
     'vue/no-unused-vars': 'warn',
@@ -65,21 +70,21 @@ module.exports = {
         'renderError'
       ]
     }],
-
+    
     // ES6+ 规则
     'prefer-const': 'error',
     'no-var': 'error',
-    'arrow-spacing': 'error',
-    'template-curly-spacing': 'error',
+    'arrow-spacing': 'off', // 由Prettier处理
+    'template-curly-spacing': 'off', // 由Prettier处理
     'object-shorthand': 'error',
-
+    
     // 新增规则
-    'no-multiple-empty-lines': ['error', { 'max': 2, 'maxEOF': 1 }],
-    'no-multi-spaces': 'error',
-    'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }],
-    'comma-spacing': ['error', { 'before': false, 'after': true }]
+    'no-multiple-empty-lines': 'off', // 由Prettier处理
+    'no-multi-spaces': 'off', // 由Prettier处理
+    'key-spacing': 'off', // 由Prettier处理
+    'comma-spacing': 'off' // 由Prettier处理
   },
-
+  
   // 忽略特定文件的规则
   overrides: [
     {
