@@ -122,12 +122,12 @@
 
 #### 1.2 构建优化
 - [x] 配置代码分割
-- [ ] 实现路由懒加载
+- [x] 实现路由懒加载
 - [ ] 优化 webpack 配置
 - [ ] 添加 Bundle Analyzer
 
 #### 1.3 开发环境
-- [ ] 完善 ESLint 规则
+- [x] 完善 ESLint 规则
 - [ ] 配置 Prettier
 - [ ] 添加 pre-commit hooks
 - [ ] 配置 Vue DevTools
