@@ -25,14 +25,19 @@
           </el-menu-item>
 
           <el-menu-item index="manage" @click="Link('manage')">
-            <i class="el-icon-s-tools"></i><span slot="title">Manage</span>
+            <i class="el-icon-s-tools"></i>
+            <span slot="title">Manage</span>
           </el-menu-item>
         </el-menu>
       </el-col>
 
-      <!--页面-->
+      <!--页面内容区域-->
       <el-col :span="23" style="padding: 10px">
-        <router-view></router-view>
+        <!-- 添加路由缓存支持 -->
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive" :key="$route.fullPath"/>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive" :key="$route.fullPath"/>
       </el-col>
     </el-row>
   </div>
@@ -40,7 +45,7 @@
 
 <script>
 export default {
-  name: 'app',
+  name: 'App',
   data() {
     return {
       rate: null
@@ -60,6 +65,12 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .sidebar-menu {
   position: relative;
   height: 100vh;
@@ -68,16 +79,16 @@ export default {
 
 /* 加深图标颜色 */
 .sidebar-menu .el-menu-item i {
-  color: #000000 !important; /* 使用Element UI的主色调 */
+  color: #000000 !important;
 }
 
 /* 鼠标悬停时的图标颜色 */
 .sidebar-menu .el-menu-item:hover i {
-  color: #66b1ff !important; /* 悬停时稍微亮一些 */
+  color: #66b1ff !important;
 }
 
 /* 激活状态的图标颜色 */
 .sidebar-menu .el-menu-item.is-active i {
-  color: #409EFF !important; /* 激活状态保持主色调 */
+  color: #409EFF !important;
 }
 </style>
