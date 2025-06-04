@@ -1,7 +1,5 @@
 <template>
   <div
-    v-loading.fullscreen.lock="loading"
-    element-loading-background="rgba(0, 0, 0, 0.8)"
     element-loading-spinner="el-icon-loading"
     element-loading-text="拼命加载中"
     style="padding-left: 1%"

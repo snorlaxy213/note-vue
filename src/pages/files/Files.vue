@@ -60,15 +60,12 @@ export default {
   },
   methods: {
     ...mapActions('ui', ['addTab', 'removeTab']),
-    // eslint-disable-next-line no-unused-vars
-    addTab(ArticleInfo) {
-      this.addTab(ArticleInfo)
-    },
+    // 移除addTab方法，直接使用mapActions映射的方法
     removeTab(targetName) {
       if (this.editableTabs.length <= 1) {
         return
       }
-      this.removeTab(targetName)
+      this.$store.dispatch('ui/removeTab', targetName)
     }
   }
 }
