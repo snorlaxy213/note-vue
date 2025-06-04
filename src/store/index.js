@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import notes from './modules/notes'
-import folders from './modules/folders'
-import user from './modules/user'
-import ui from './modules/ui'
-import books from './modules/books'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import notes from './modules/notes';
+import folders from './modules/folders';
+import user from './modules/user';
+import ui from './modules/ui';
+import books from './modules/books';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
@@ -17,6 +17,6 @@ const store = new Vuex.Store({
     books
   },
   strict: process.env.NODE_ENV !== 'production'
-})
+});
 
-export default store
+export default store;

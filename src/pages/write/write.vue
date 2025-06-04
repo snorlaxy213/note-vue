@@ -71,7 +71,7 @@
 
 <script>
 import request from '@/network/request';
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'write',
@@ -137,7 +137,7 @@ export default {
         folder_id: 0
       };
       this.setCurrentNote(defaultArticle);
-      
+
       // 强制重置mavon-editor组件
       this.$nextTick(() => {
         if (this.$refs.md) {

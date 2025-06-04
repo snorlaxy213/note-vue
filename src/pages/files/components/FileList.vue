@@ -280,7 +280,6 @@ export default {
         this.loading = false;
       });
     }
-
   },
   computed: {},
   components: {

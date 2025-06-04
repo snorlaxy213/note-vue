@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import TabContent from './components/TabContent'
-import MakedownShow from '../../components/MakedownShow.vue'
+import { mapGetters, mapActions } from 'vuex';
+import TabContent from './components/TabContent';
+import MakedownShow from '../../components/MakedownShow.vue';
 
 export default {
   name: 'files',
@@ -48,14 +48,14 @@ export default {
     ...mapGetters('ui', ['currentTab', 'allTabs']),
     editableTabsValue: {
       get() {
-        return this.currentTab
+        return this.currentTab;
       },
       set(value) {
-        this.$store.commit('ui/SET_ACTIVE_TAB', value)
+        this.$store.commit('ui/SET_ACTIVE_TAB', value);
       }
     },
     editableTabs() {
-      return this.allTabs
+      return this.allTabs;
     }
   },
   methods: {
@@ -63,10 +63,10 @@ export default {
     // 移除addTab方法，直接使用mapActions映射的方法
     removeTab(targetName) {
       if (this.editableTabs.length <= 1) {
-        return
+        return;
       }
-      this.$store.dispatch('ui/removeTab', targetName)
+      this.$store.dispatch('ui/removeTab', targetName);
     }
   }
-}
+};
 </script>

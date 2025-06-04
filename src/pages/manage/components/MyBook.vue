@@ -84,105 +84,116 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'MyBook',
   computed: {
-    ...mapGetters('books', ['bookList', 'currentBook', 'isDialogVisible', 'isLoading']),
+    ...mapGetters('books', [
+      'bookList',
+      'currentBook',
+      'isDialogVisible',
+      'isLoading'
+    ]),
     tableData() {
-      return this.bookList
+      return this.bookList;
     },
     loading() {
-      return this.isLoading
+      return this.isLoading;
     },
     dialogVisible: {
       get() {
-        return this.isDialogVisible
+        return this.isDialogVisible;
       },
       set(value) {
-        this.$store.commit('books/SET_DIALOG_VISIBLE', value)
+        this.$store.commit('books/SET_DIALOG_VISIBLE', value);
       }
     },
     book: {
       get() {
-        return this.currentBook
+        return this.currentBook;
       },
       set(value) {
-        this.$store.commit('books/SET_CURRENT_BOOK', value)
+        this.$store.commit('books/SET_CURRENT_BOOK', value);
       }
     }
   },
   mounted() {
-    this.fetchBooks()
+    this.fetchBooks();
   },
   methods: {
-    ...mapActions('books', ['fetchBooks', 'addBook', 'updateBook', 'deleteBook', 'uploadBookImage']),
+    ...mapActions('books', [
+      'fetchBooks',
+      'addBook',
+      'updateBook',
+      'deleteBook',
+      'uploadBookImage'
+    ]),
     goBack() {
-      this.$router.push('/manage')
+      this.$router.push('/manage');
     },
     async Delete(val) {
       try {
-        await this.deleteBook(val.id)
+        await this.deleteBook(val.id);
         this.$message({
           type: 'success',
           message: '删除成功'
-        })
+        });
       } catch (error) {
         this.$message({
           type: 'error',
           message: '删除失败'
-        })
+        });
       }
     },
     async Update(val) {
       try {
-        await this.updateBook(val)
+        await this.updateBook(val);
         this.$message({
           type: 'success',
           message: '更新成功'
-        })
+        });
       } catch (error) {
         this.$message({
           type: 'error',
           message: '更新失败'
-        })
+        });
       }
     },
     async UploadImg(file) {
       try {
-        const imageUrl = await this.uploadBookImage(file)
+        const imageUrl = await this.uploadBookImage(file);
         this.$store.commit('books/SET_CURRENT_BOOK', {
           ...this.currentBook,
           img_url: imageUrl
-        })
+        });
         this.$message({
           type: 'success',
           message: '图片上传成功'
-        })
+        });
       } catch (error) {
         this.$message({
           type: 'error',
           message: '图片上传失败'
-        })
+        });
       }
     },
     async AddBook() {
       try {
-        await this.addBook()
+        await this.addBook();
         this.$message({
           type: 'success',
           message: '添加成功'
-        })
+        });
       } catch (error) {
         this.$message({
           type: 'error',
           message: '添加失败'
-        })
+        });
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
