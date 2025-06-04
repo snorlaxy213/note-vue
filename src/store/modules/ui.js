@@ -1,6 +1,6 @@
 const state = {
   // 导航状态
-  activeNavIndex: 'write',
+  activeNavIndex: 'files', // 修改默认值从 'write' 到 'files'
 
   // 标签页管理
   editableTabsValue: '1',

@@ -84,108 +84,35 @@ const mutations = {
   }
 };
 
+// 定义一个名为actions的对象，包含异步操作的saveTempNote方法
 const actions = {
-  async fetchNotes({ commit }) {
-    commit('SET_LOADING', true);
-    try {
-      // TODO: 实现API调用
-      const notes = [];
-      commit('SET_NOTES', notes);
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
-  async createNote({ commit }, noteData) {
-    commit('SET_LOADING', true);
-    try {
-      // TODO: 实现API调用
-      const newNote = { ...noteData, id: Date.now() };
-      commit('ADD_NOTE', newNote);
-      return newNote;
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-      throw error;
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
-  async updateNote({ commit }, noteData) {
-    commit('SET_LOADING', true);
-    try {
-      // TODO: 实现API调用
-      commit('UPDATE_NOTE', noteData);
-      return noteData;
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-      throw error;
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
-  async deleteNote({ commit }, noteId) {
-    commit('SET_LOADING', true);
-    try {
-      // TODO: 实现API调用
-      commit('DELETE_NOTE', noteId);
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-      throw error;
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
-  async fetchTempNote({ commit }) {
-    commit('SET_LOADING', true);
-    try {
-      const resp = await request({
-        url: '/article/temp_get'
-      });
-      const note = resp.data.data;
-      commit('SET_CURRENT_NOTE', note);
-      return note;
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-      throw error;
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  },
 
+  /**
+   * 异步方法saveTempNote，用于保存临时笔记
+   * @param {Object} context - 上下文对象，包含commit方法，用于提交mutation
+   * @param {Object} noteData - 要保存的笔记数据
+   * @returns {Promise} - 返回一个Promise对象，包含服务器响应的数据
+   */
   async saveTempNote({ commit }, noteData) {
     try {
+      // 发起HTTP请求，保存临时笔记到服务器
       const resp = await request({
         url: '/article/temp_save',
         method: 'post',
         data: noteData
       });
+      // 返回服务器响应的数据
       return resp.data;
     } catch (error) {
+      // 当请求失败时，提交错误信息到store
       commit('SET_ERROR', error.message);
+      // 重新抛出错误，以便调用者可以捕获
       throw error;
     }
   },
 
-  async saveNote({ commit }, noteData) {
-    commit('SET_LOADING', true);
-    try {
-      // TODO: 实现文章保存API调用
-      const resp = await request({
-        url: '/article/save',
-        method: 'post',
-        data: noteData
-      });
-      commit('UPDATE_NOTE', resp.data.data);
-      return resp.data.data;
-    } catch (error) {
-      commit('SET_ERROR', error.message);
-      throw error;
-    } finally {
-      commit('SET_LOADING', false);
-    }
-  }
 };
+
 
 const getters = {
   allNotes: state => state.notes,

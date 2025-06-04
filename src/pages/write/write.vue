@@ -32,18 +32,12 @@
     </el-col>
 
     <!--编辑器侧边信息-->
-    <el-col :span="3" style="padding-top: 2%">
+    <el-col :span="3" style="padding-top: 1%">
       <!--日期-->
       <div style="text-align: center">
-        创建日期:
-        <i class="el-icon-date" style="color: deepskyblue">{{
-          currentNote.created_at
-        }}</i
-        ><br />
-        最近更新:
-        <i class="el-icon-date" style="color: orange">{{
-          currentNote.updated_at
-        }}</i>
+        创建日期:<i class="el-icon-date" style="color: deepskyblue">{{currentNote.created_at }}</i>
+        <br />
+        最近更新:<i class="el-icon-date" style="color: orange">{{currentNote.updated_at }}</i>
       </div>
       <el-divider></el-divider>
 
@@ -62,8 +56,10 @@
 
       <!--保存-->
       <div style="text-align: center">
-        <el-button type="success" @click="FinishSave">保存文章</el-button>
-        <el-link @click="DeleteCache">清空</el-link>
+        <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+          <el-button type="success" @click="FinishSave">保存文章</el-button>
+          <el-button type="danger" plain @click="DeleteCache">清空</el-button>
+        </div>
       </div>
     </el-col>
   </div>
@@ -87,11 +83,15 @@ export default {
     }
   },
 
+  // 在组件销毁之前执行的操作
   beforeDestroy() {
+    // 检查当前笔记的ID是否既不为0也不为空，以确定是否需要保存笔记
     if (this.currentNote.id !== 0 && this.currentNote.id != null) {
+      // 调用保存临时笔记的方法，将当前笔记保存到临时存储或服务器
       this.saveTempNote(this.currentNote);
     }
   },
+
 
   data: function () {
     return {
@@ -119,7 +119,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('notes', ['fetchTempNote', 'saveTempNote']),
+    ...mapActions('notes', ['saveTempNote']),
     ...mapMutations('notes', {
       setCurrentNote: 'SET_CURRENT_NOTE',
       setLoading: 'SET_LOADING'
@@ -214,10 +214,10 @@ export default {
     },
 
     //图片上传七牛云 图片名字唯一
-    ImgAdd(pos, imgfile) {
-      console.log(imgfile); //防止报错
+    ImgAdd(pos, imgFile) {
+      console.log(imgFile); //防止报错
       let data = new FormData();
-      data.append('img', imgfile);
+      data.append('img', imgFile);
       this.loading = true;
       request({
         headers: {
@@ -253,7 +253,7 @@ export default {
           img_name: file[1].name
         }
       }).then(resp => {
-        if (resp.data.code == 500) {
+        if (resp.data.code === 500) {
           this.$message({
             type: 'error',
             message: resp.data.msg

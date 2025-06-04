@@ -115,53 +115,64 @@ export default {
       loading: false,
       FolderList: [],
       ArticleList: [],
-      Nav: [], // 初始化为空数组
+      Nav: [],
       currentPage: 1,
       Total: 1,
-      currentTitle: 'Home'
+      currentTitle: 'Home',
+      isInitialized: false // 添加初始化标志
     };
   },
 
   mounted() {
-    request({
-      url: '/folder/sub_file/' + this.currentPage // 使用当前页码
-    }).then(resp => {
-      this.FolderList = resp.data.Folders;
-      this.ArticleList = resp.data.Articles;
-      this.loading = false;
-
-      // 处理导航数据，过滤掉空值和重复的 'Home'
-      let navData = resp.data.Nav || [];
-
-      // 如果导航数据为空或者第一个元素不是有效值，设置为 ['Home']
-      if (!navData || navData.length === 0 || !navData[0]) {
-        this.Nav = ['Home'];
-      } else {
-        // 过滤掉空字符串和重复的 'Home'
-        this.Nav = navData.filter((item, index) => {
-          return item && item.trim() !== '' && !(item === 'Home' && index > 0);
-        });
-
-        // 如果过滤后为空，设置默认值
-        if (this.Nav.length === 0) {
-          this.Nav = ['Home'];
-        }
-      }
-
-      this.Total = Number(resp.data.Total);
-      if (this.$parent.$refs.navigate) {
-        this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
-      }
-      this.loading = false;
-    });
+    if (!this.isInitialized) {
+      this.loadData();
+      this.isInitialized = true;
+    }
   },
 
   activated() {
-    // 当keep-alive组件被激活时刷新数据
-    this.refreshData();
+    // 只有在已经初始化后才刷新数据
+    if (this.isInitialized) {
+      this.refreshData();
+    }
   },
 
   methods: {
+    // 提取公共的数据加载逻辑
+    loadData() {
+      request({
+        url: '/folder/sub_file/' + this.currentPage
+      }).then(resp => {
+        this.FolderList = resp.data.Folders;
+        this.ArticleList = resp.data.Articles;
+        this.loading = false;
+
+        // 处理导航数据，过滤掉空值和重复的 'Home'
+        let navData = resp.data.Nav || [];
+
+        // 如果导航数据为空或者第一个元素不是有效值，设置为 ['Home']
+        if (!navData || navData.length === 0 || !navData[0]) {
+          this.Nav = ['Home'];
+        } else {
+          // 过滤掉空字符串和重复的 'Home'
+          this.Nav = navData.filter((item, index) => {
+            return item && item.trim() !== '' && !(item === 'Home' && index > 0);
+          });
+
+          // 如果过滤后为空，设置默认值
+          if (this.Nav.length === 0) {
+            this.Nav = ['Home'];
+          }
+        }
+
+        this.Total = Number(resp.data.Total);
+        if (this.$parent.$refs.navigate) {
+          this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
+        }
+        this.loading = false;
+      });
+    },
+    
     // 导航路径点击
     navigateToPath(navItem, index) {
       if (index < this.Nav.length - 1) {
