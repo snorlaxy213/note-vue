@@ -116,7 +116,7 @@ export default {
     AccessFolder() {
       this.loading = true;
       request({
-        url: '/folder/sub_file/' + 1, // 点击文件夹时总是从第一页开始
+        url: '/folder/sub_file/' + 1,
         params: {
           title: this.FolderInfo.title,
           folder_id: this.FolderInfo.id
@@ -126,7 +126,7 @@ export default {
           'AccessFolder',
           resp.data.Folders,
           resp.data.Articles,
-          resp.data.Nav.reverse(),
+          [...resp.data.Nav].reverse(), // 使用展开运算符避免修改原数组
           resp.data.Total
         );
         this.loading = false;

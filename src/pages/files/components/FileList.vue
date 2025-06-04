@@ -197,7 +197,14 @@ export default {
       this.Nav = nav || ['Home'];
       this.Total = Number(total);
       this.currentPage = 1;
-
+    
+      // 强制更新分页组件
+      this.$nextTick(() => {
+        if (this.$refs.pagination) {
+          this.$refs.pagination.internalCurrentPage = 1;
+        }
+      });
+    
       // 更新导航栏
       if (this.$parent.$refs.navigate) {
         this.$parent.$refs.navigate.$data.Nav = [...nav].reverse();
