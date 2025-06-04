@@ -156,6 +156,11 @@ export default {
     });
   },
 
+  activated() {
+    // 当keep-alive组件被激活时刷新数据
+    this.refreshData();
+  },
+
   methods: {
     // 导航路径点击
     navigateToPath(navItem, index) {
@@ -258,7 +263,24 @@ export default {
       ) {
         this.handleCurrentChange(this.currentPage - 1);
       }
+    },
+
+    // 新增刷新数据方法
+    refreshData() {
+      this.loading = true;
+      request({
+        url: '/folder/sub_file/' + this.currentPage,
+        params: {
+          title: this.Nav[this.Nav.length - 1]
+        }
+      }).then(resp => {
+        this.FolderList = resp.data.Folders;
+        this.ArticleList = resp.data.Articles;
+        this.Total = Number(resp.data.Total);
+        this.loading = false;
+      });
     }
+
   },
   computed: {},
   components: {

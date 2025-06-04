@@ -1,21 +1,35 @@
 <template>
-  <div v-loading.fullscreen.lock="loading" element-loading-background="rgba(0, 0, 0, 0.8)"
-    element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中" style="padding-left: 1%">
+  <div
+    v-loading.fullscreen.lock="loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    element-loading-spinner="el-icon-loading"
+    element-loading-text="拼命加载中"
+    style="padding-left: 1%"
+  >
     <!--编辑器-->
     <el-col :span="21" style="padding-right: 1%">
       <el-row>
-        <div style="
+        <div
+          style="
             text-align: center;
             margin-bottom: 1%;
             margin-top: 1%;
             font-size: 30px;
-          ">
+          "
+        >
           <el-input v-model="currentNote.title" placeholder="标题"></el-input>
         </div>
       </el-row>
       <el-row>
-        <mavon-editor ref="md" v-model="currentNote.mkValue" :ishljs="true" style="height: 700px" @imgAdd="ImgAdd"
-          @imgDel="ImgDel" @save="Save" />
+        <mavon-editor
+          ref="md"
+          v-model="currentNote.mkValue"
+          :ishljs="true"
+          style="height: 700px"
+          @imgAdd="ImgAdd"
+          @imgDel="ImgDel"
+          @save="Save"
+        />
       </el-row>
     </el-col>
 
@@ -26,19 +40,25 @@
         创建日期:
         <i class="el-icon-date" style="color: deepskyblue">{{
           currentNote.created_at
-          }}</i><br />
+        }}</i
+        ><br />
         最近更新:
         <i class="el-icon-date" style="color: orange">{{
           currentNote.updated_at
-          }}</i>
+        }}</i>
       </div>
       <el-divider></el-divider>
 
       <!--目录-->
       <div>
         目录:
-        <el-cascader v-model="currentNote.dir_path" :options="options" :props="props" clearable
-          filterable></el-cascader>
+        <el-cascader
+          v-model="currentNote.dir_path"
+          :options="options"
+          :props="props"
+          clearable
+          filterable
+        ></el-cascader>
       </div>
       <el-divider></el-divider>
 
@@ -61,9 +81,11 @@ export default {
 
   mounted() {
     if (this.$route.params.article) {
+      // 从其他页面传递文章参数进入编辑模式
       this.setCurrentNote(this.$route.params.article);
     } else {
-      this.loadTempArticle();
+      // 直接进入write页面，重置为新文章
+      this.resetToNewArticle();
     }
   },
 
@@ -100,69 +122,31 @@ export default {
 
   methods: {
     ...mapActions('notes', ['fetchTempNote', 'saveTempNote']),
-    ...mapMutations('notes', ['setCurrentNote', 'setLoading']),
+    ...mapMutations('notes', {
+      setCurrentNote: 'SET_CURRENT_NOTE',
+      setLoading: 'SET_LOADING'
+    }),
 
-    async loadTempArticle() {
-      this.setLoading(true);
-      const currentDate = this.getCurrentDate();
-
-      try {
-        const resp = await request({
-          url: '/article/temp_get'
-        });
-
-        let article = resp.data.data;
-
-        // 确保文章对象有所有必需的属性
-        if (!article || typeof article !== 'object') {
-          article = {
-            id: null,
-            created_at: currentDate,
-            updated_at: currentDate,
-            title: '',
-            dir_path: [],
-            mkValue: '',
-            folder_id: 0
-          };
-        } else {
-          // 如果后端返回的日期为空或默认值，则使用当前日期
-          if (!article.created_at || article.created_at === '0-0-0-0') {
-            article.created_at = currentDate;
-          }
-          if (!article.updated_at || article.updated_at === '0-0-0-0') {
-            article.updated_at = currentDate;
-          }
-          // 确保 title 不为 null 或 undefined
-          if (!article.title) {
-            article.title = '';
-          }
-          // 确保 dir_path 是数组
-          if (!Array.isArray(article.dir_path)) {
-            article.dir_path = [];
-          }
-          // 确保 mkValue 不为 null
-          if (!article.mkValue) {
-            article.mkValue = '';
-          }
+    // 添加重置为新文章的方法
+    resetToNewArticle() {
+      const defaultArticle = {
+        id: null,
+        created_at: this.getCurrentDate(),
+        updated_at: this.getCurrentDate(),
+        title: '',
+        dir_path: [],
+        mkValue: '',
+        folder_id: 0
+      };
+      this.setCurrentNote(defaultArticle);
+      
+      // 强制重置mavon-editor组件
+      this.$nextTick(() => {
+        if (this.$refs.md) {
+          this.$refs.md.d_value = '';
+          this.$refs.md.s_preview_switch = false;
         }
-
-        this.setCurrentNote(article);
-      } catch (error) {
-        console.error('加载临时文章失败:', error);
-        // 如果加载失败，创建一个新的默认文章
-        const defaultArticle = {
-          id: null,
-          created_at: currentDate,
-          updated_at: currentDate,
-          title: '',
-          dir_path: [],
-          mkValue: '',
-          folder_id: 0
-        };
-        this.setCurrentNote(defaultArticle);
-      } finally {
-        this.setLoading(false);
-      }
+      });
     },
 
     // 获取当前日期
@@ -188,17 +172,19 @@ export default {
         method: 'post',
         url: '/article/update',
         data: noteData
-      }).then(resp => {
-        this.$message({
-          type: 'success',
-          message: resp.data.msg
+      })
+        .then(resp => {
+          this.$message({
+            type: 'success',
+            message: resp.data.msg
+          });
+          this.setCurrentNote(resp.data.data);
+          this.setLoading(false);
+        })
+        .catch(error => {
+          console.error('保存失败:', error);
+          this.setLoading(false);
         });
-        this.setCurrentNote(resp.data.data);
-        this.setLoading(false);
-      }).catch(error => {
-        console.error('保存失败:', error);
-        this.setLoading(false);
-      });
     },
 
     //编辑器
