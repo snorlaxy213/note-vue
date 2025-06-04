@@ -2,7 +2,10 @@ const state = {
   folders: [],
   currentFolder: null,
   loading: false,
-  error: null
+  error: null,
+  folderList: [],
+  navigationPath: [],
+  editDialogVisible: false,
 }
 
 const mutations = {
@@ -29,7 +32,22 @@ const mutations = {
   },
   SET_ERROR(state, error) {
     state.error = error
-  }
+  },
+  SET_FOLDER_LIST(state, folders) {
+    state.folderList = folders
+  },
+  SET_NAVIGATION_PATH(state, path) {
+    state.navigationPath = path
+  },
+  SET_EDIT_DIALOG_VISIBLE(state, visible) {
+    state.editDialogVisible = visible
+  },
+  ADD_TO_NAVIGATION(state, folder) {
+    state.navigationPath.push(folder)
+  },
+  REMOVE_FROM_NAVIGATION(state, index) {
+    state.navigationPath.splice(index + 1)
+  },
 }
 
 const actions = {
@@ -83,7 +101,28 @@ const actions = {
     } finally {
       commit('SET_LOADING', false)
     }
-  }
+  },
+  async fetchFolderList({ commit }, parentId = null) {
+    commit('SET_LOADING', true)
+    try {
+      const response = await request({
+        url: '/folder/list',
+        params: { parent_id: parentId }
+      })
+      commit('SET_FOLDER_LIST', response.data.items || [])
+    } catch (error) {
+      commit('SET_ERROR', error.message)
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+  navigateToFolder({ commit }, { folder, index }) {
+    if (index !== undefined) {
+      commit('REMOVE_FROM_NAVIGATION', index)
+    } else {
+      commit('ADD_TO_NAVIGATION', folder)
+    }
+  },
 }
 
 const getters = {

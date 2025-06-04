@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import notes from './modules/notes'
 import folders from './modules/folders'
 import user from './modules/user'
+import ui from './modules/ui'
+import books from './modules/books'
 
 Vue.use(Vuex)
 
@@ -10,7 +12,9 @@ const store = new Vuex.Store({
   modules: {
     notes,
     folders,
-    user
+    user,
+    ui,
+    books
   },
   strict: process.env.NODE_ENV !== 'production'
 })

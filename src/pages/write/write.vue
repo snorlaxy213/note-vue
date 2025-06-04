@@ -1,35 +1,21 @@
 <template>
-  <div
-    v-loading.fullscreen.lock="loading"
-    element-loading-background="rgba(0, 0, 0, 0.8)"
-    element-loading-spinner="el-icon-loading"
-    element-loading-text="拼命加载中"
-    style="padding-left: 1%"
-  >
+  <div v-loading.fullscreen.lock="loading" element-loading-background="rgba(0, 0, 0, 0.8)"
+    element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中" style="padding-left: 1%">
     <!--编辑器-->
     <el-col :span="21" style="padding-right: 1%">
       <el-row>
-        <div
-          style="
+        <div style="
             text-align: center;
             margin-bottom: 1%;
             margin-top: 1%;
             font-size: 30px;
-          "
-        >
-          <el-input v-model="article.title" placeholder="标题"></el-input>
+          ">
+          <el-input v-model="currentNote.title" placeholder="标题"></el-input>
         </div>
       </el-row>
       <el-row>
-        <mavon-editor
-          ref="md"
-          v-model="article.mkValue"
-          :ishljs="true"
-          style="height: 700px"
-          @imgAdd="ImgAdd"
-          @imgDel="ImgDel"
-          @save="Save"
-        />
+        <mavon-editor ref="md" v-model="currentNote.mkValue" :ishljs="true" style="height: 700px" @imgAdd="ImgAdd"
+          @imgDel="ImgDel" @save="Save" />
       </el-row>
     </el-col>
 
@@ -39,26 +25,20 @@
       <div style="text-align: center">
         创建日期:
         <i class="el-icon-date" style="color: deepskyblue">{{
-          article.created_at
-        }}</i
-        ><br />
+          currentNote.created_at
+          }}</i><br />
         最近更新:
         <i class="el-icon-date" style="color: orange">{{
-          article.updated_at
-        }}</i>
+          currentNote.updated_at
+          }}</i>
       </div>
       <el-divider></el-divider>
 
       <!--目录-->
       <div>
         目录:
-        <el-cascader
-          v-model="article.dir_path"
-          :options="options"
-          :props="props"
-          clearable
-          filterable
-        ></el-cascader>
+        <el-cascader v-model="currentNote.dir_path" :options="options" :props="props" clearable
+          filterable></el-cascader>
       </div>
       <el-divider></el-divider>
 
@@ -73,6 +53,7 @@
 
 <script>
 import request from '@/network/request';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'write',
@@ -80,75 +61,110 @@ export default {
 
   mounted() {
     if (this.$route.params.article) {
-      this.article = this.$route.params.article;
+      this.setCurrentNote(this.$route.params.article);
     } else {
-      this.loading = true;
-      // 设置当前日期
-      const currentDate = this.getCurrentDate();
-      request({
-        url: '/article/temp_get'
-      }).then(resp => {
-        this.article = resp.data.data;
-        // 如果后端返回的日期为空或默认值，则使用当前日期
-        if (!this.article.created_at || this.article.created_at === '0-0-0-0') {
-          this.article.created_at = currentDate;
-        }
-        if (!this.article.updated_at || this.article.updated_at === '0-0-0-0') {
-          this.article.updated_at = currentDate;
-        }
-        this.loading = false;
-      });
+      this.loadTempArticle();
     }
   },
 
   beforeDestroy() {
-    if (this.article.id !== 0 && this.article.id != null) {
-      request({
-        url: '/article/temp_save',
-        method: 'post',
-        data: this.article
-      }).then(resp => {
-        // 移除消息提示，静默保存
-        console.log('文章已自动保存:', resp.data.msg);
-      });
+    if (this.currentNote.id !== 0 && this.currentNote.id != null) {
+      this.saveTempNote(this.currentNote);
     }
   },
 
   data: function () {
     return {
-      loading: false,
       //目录
       options: [],
       props: {
         checkStrictly: true,
         lazy: true,
         lazyLoad(node, resolve) {
-          // eslint-disable-next-line no-console
           request({
             url: '/folder/sub_folder',
             params: {
               id: node.value
-              // title: node.label
             }
           }).then(resp => {
             resolve(resp.data.data);
           });
         }
-      },
-
-      article: {
-        id: null,
-        created_at: '0-0-0-0',
-        updated_at: '0-0-0-0',
-        title: '无标题',
-        dir_path: [],
-        mkValue: '',
-        folder_id: 0
       }
     };
   },
 
+  computed: {
+    ...mapState('notes', ['currentNote', 'loading'])
+  },
+
   methods: {
+    ...mapActions('notes', ['fetchTempNote', 'saveTempNote']),
+    ...mapMutations('notes', ['setCurrentNote', 'setLoading']),
+
+    async loadTempArticle() {
+      this.setLoading(true);
+      const currentDate = this.getCurrentDate();
+
+      try {
+        const resp = await request({
+          url: '/article/temp_get'
+        });
+
+        let article = resp.data.data;
+
+        // 确保文章对象有所有必需的属性
+        if (!article || typeof article !== 'object') {
+          article = {
+            id: null,
+            created_at: currentDate,
+            updated_at: currentDate,
+            title: '',
+            dir_path: [],
+            mkValue: '',
+            folder_id: 0
+          };
+        } else {
+          // 如果后端返回的日期为空或默认值，则使用当前日期
+          if (!article.created_at || article.created_at === '0-0-0-0') {
+            article.created_at = currentDate;
+          }
+          if (!article.updated_at || article.updated_at === '0-0-0-0') {
+            article.updated_at = currentDate;
+          }
+          // 确保 title 不为 null 或 undefined
+          if (!article.title) {
+            article.title = '';
+          }
+          // 确保 dir_path 是数组
+          if (!Array.isArray(article.dir_path)) {
+            article.dir_path = [];
+          }
+          // 确保 mkValue 不为 null
+          if (!article.mkValue) {
+            article.mkValue = '';
+          }
+        }
+
+        this.setCurrentNote(article);
+      } catch (error) {
+        console.error('加载临时文章失败:', error);
+        // 如果加载失败，创建一个新的默认文章
+        const defaultArticle = {
+          id: null,
+          created_at: currentDate,
+          updated_at: currentDate,
+          title: '',
+          dir_path: [],
+          mkValue: '',
+          folder_id: 0
+        };
+        this.setCurrentNote(defaultArticle);
+      } finally {
+        this.setLoading(false);
+      }
+    },
+
     // 获取当前日期
     getCurrentDate() {
       const now = new Date();
@@ -162,43 +178,54 @@ export default {
 
     //点击保存事件
     FinishSave() {
-      this.loading = true;
-      this.article.mkValue = this.$refs.md.$data.d_value;
+      this.setLoading(true);
+      const noteData = {
+        ...this.currentNote,
+        mkValue: this.$refs.md.$data.d_value
+      };
+
       request({
         method: 'post',
         url: '/article/update',
-        data: this.article
+        data: noteData
       }).then(resp => {
         this.$message({
           type: 'success',
           message: resp.data.msg
         });
-        this.article = resp.data.data;
-        this.loading = false;
+        this.setCurrentNote(resp.data.data);
+        this.setLoading(false);
+      }).catch(error => {
+        console.error('保存失败:', error);
+        this.setLoading(false);
       });
     },
 
     //编辑器
     //保存 Ctrl+S回调
     Save(mkValue) {
-      this.article.mkValue = mkValue;
-      this.loading = true;
+      const noteData = {
+        ...this.currentNote,
+        mkValue: mkValue
+      };
+      this.setLoading(true);
 
       request({
         url: '/article/update',
         method: 'post',
-        data: this.article
+        data: noteData
       })
         .then(resp => {
           this.$message({
             type: 'success',
             message: resp.data.msg
           });
-          this.article = resp.data.data;
-          this.loading = false;
+          this.setCurrentNote(resp.data.data);
+          this.setLoading(false);
         })
         .catch(err => {
           console.log(err);
+          this.setLoading(false);
         });
     },
 
@@ -267,15 +294,16 @@ export default {
           type: 'success',
           message: resp.data.msg
         });
-        this.article = {
+        const defaultArticle = {
           id: null,
-          created_at: null,
-          updated_at: null,
-          title: '无标题',
+          created_at: this.getCurrentDate(),
+          updated_at: this.getCurrentDate(),
+          title: '',
           dir_path: [],
           mkValue: '',
           folder_id: 0
         };
+        this.setCurrentNote(defaultArticle);
       });
     }
   }

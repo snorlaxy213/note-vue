@@ -84,107 +84,105 @@
 </template>
 
 <script>
-import request from '@/network/request';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MyBook',
-  mounted() {
-    this.loading = true;
-    request({
-      url: '/my/book/get/all'
-    }).then(resp => {
-      this.tableData = resp.data.items;
-      this.Total = resp.data.total;
-      this.loading = false;
-    });
-  },
-  data() {
-    return {
-      loading: false,
-      UploadUrl: 'http://localhost:8080/qiniu/img_upload',
-      book: {
-        title: '',
-        writer: '',
-        img_url: '',
-        status: '想读'
+  computed: {
+    ...mapGetters('books', ['bookList', 'currentBook', 'isDialogVisible', 'isLoading']),
+    tableData() {
+      return this.bookList
+    },
+    loading() {
+      return this.isLoading
+    },
+    dialogVisible: {
+      get() {
+        return this.isDialogVisible
       },
-      tableData: [],
-      Total: 0,
-      editDialogVisible: false
-    };
+      set(value) {
+        this.$store.commit('books/SET_DIALOG_VISIBLE', value)
+      }
+    },
+    book: {
+      get() {
+        return this.currentBook
+      },
+      set(value) {
+        this.$store.commit('books/SET_CURRENT_BOOK', value)
+      }
+    }
+  },
+  mounted() {
+    this.fetchBooks()
   },
   methods: {
+    ...mapActions('books', ['fetchBooks', 'addBook', 'updateBook', 'deleteBook', 'uploadBookImage']),
     goBack() {
-      this.$router.push('/manage');
+      this.$router.push('/manage')
     },
-    Delete(val) {
-      this.loading = true;
-      request({
-        url: '/my/book/delete/' + val.id
-      }).then(resp => {
+    async Delete(val) {
+      try {
+        await this.deleteBook(val.id)
         this.$message({
           type: 'success',
-          message: resp.data.msg
-        });
-        this.loading = false;
-      });
-      location.reload();
+          message: '删除成功'
+        })
+      } catch (error) {
+        this.$message({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
     },
-    Update(val) {
-      this.loading = true;
-      request({
-        method: 'post',
-        url: '/my/book/update',
-        data: val
-      }).then(resp => {
+    async Update(val) {
+      try {
+        await this.updateBook(val)
         this.$message({
           type: 'success',
-          message: resp.data.msg
-        });
-        this.loading = false;
-      });
+          message: '更新成功'
+        })
+      } catch (error) {
+        this.$message({
+          type: 'error',
+          message: '更新失败'
+        })
+      }
     },
-    UploadImg(file) {
-      let data = new FormData();
-      data.append('img', file);
-      this.loading = true;
-      request({
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        method: 'post',
-        url: '/qiniu/img_upload',
-        data: data
-      }).then(resp => {
+    async UploadImg(file) {
+      try {
+        const imageUrl = await this.uploadBookImage(file)
+        this.$store.commit('books/SET_CURRENT_BOOK', {
+          ...this.currentBook,
+          img_url: imageUrl
+        })
         this.$message({
           type: 'success',
-          message: resp.data.msg
-        });
-
-        this.book.img_url = resp.data.data;
-        this.loading = false;
-      });
+          message: '图片上传成功'
+        })
+      } catch (error) {
+        this.$message({
+          type: 'error',
+          message: '图片上传失败'
+        })
+      }
     },
-    AddBook() {
-      this.loading = true;
-      request({
-        method: 'post',
-        url: '/my/book/add',
-        data: this.book
-      }).then(resp => {
-        this.tableData.unshift(resp.data.data);
-        this.book = {
-          title: '',
-          writer: '',
-          img_url: '',
-          status: '想读'
-        };
-        this.dialogVisible = false;
-        this.loading = false;
-      });
+    async AddBook() {
+      try {
+        await this.addBook()
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+      } catch (error) {
+        this.$message({
+          type: 'error',
+          message: '添加失败'
+        })
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>

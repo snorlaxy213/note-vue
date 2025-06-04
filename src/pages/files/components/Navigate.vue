@@ -108,7 +108,10 @@ export default {
 
     // 新增方法：直接跳转到写作页面
     goToWrite() {
-      this.$router.push('/write');
+      // 检查当前路由是否已经在写作页面
+      if (this.$route.path !== '/write') {
+        this.$router.push('/write');
+      }
     },
 
     open(title) {

@@ -52,24 +52,27 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'App',
-  data() {
-    return {
-      rate: null
-    };
+  computed: {
+    ...mapGetters('ui', ['activeNavIndex']),
+    navIndex() {
+      return this.activeNavIndex || this.$route.name
+    }
   },
   methods: {
+    ...mapActions('ui', ['navigateTo']),
     Link(path) {
-      this.$router.push('/' + path);
-    }
-  },
-  computed: {
-    navIndex() {
-      return this.$route.name;
+      const targetPath = '/' + path
+      if (this.$route.path !== targetPath) {
+        this.navigateTo(path)
+        this.$router.push(targetPath)
+      }
     }
   }
-};
+}
 </script>
 
 <style>
