@@ -128,7 +128,7 @@
 
 #### 1.3 开发环境
 - [x] 完善 ESLint 规则
-- [ ] 配置 Prettier
+- [x] 配置 Prettier
 - [ ] 添加 pre-commit hooks
 - [ ] 配置 Vue DevTools
 
