@@ -18,14 +18,10 @@
             @NewTab="addTab"
           ></tab-content>
 
-          <div
-            v-if="item.title !== 'files'"
-            style="padding-left: 6%; padding-right: 9%"
-          >
-            <makedown-show
+          <div v-if="item.title !== 'files'">
+            <MakedownShow
               :mk-value="item.content"
-              background="#F0FFF0"
-            ></makedown-show>
+            ></MakedownShow>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -46,6 +42,7 @@ export default {
   },
   computed: {
     ...mapGetters('ui', ['currentTab', 'allTabs']),
+
     editableTabsValue: {
       get() {
         return this.currentTab;
@@ -60,6 +57,7 @@ export default {
   },
   methods: {
     ...mapActions('ui', ['addTab', 'removeTab']),
+
     // 移除addTab方法，直接使用mapActions映射的方法
     removeTab(targetName) {
       if (this.editableTabs.length <= 1) {

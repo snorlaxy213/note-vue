@@ -4,7 +4,6 @@
       :boxShadow="false"
       :defaultOpen="'preview'"
       :editable="false"
-      :previewBackground="background"
       :subfield="false"
       :toolbarsFlag="false"
       :value="mkValue"
@@ -16,7 +15,7 @@
 <script>
 export default {
   name: 'MakedownShow',
-  props: ['mkValue', 'background']
+  props: ['mkValue']
 };
 </script>
 

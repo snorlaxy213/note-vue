@@ -18,11 +18,15 @@
           <el-input v-model="currentNote.title" placeholder="标题"></el-input>
         </div>
       </el-row>
+
       <el-row>
         <mavon-editor
           ref="md"
           v-model="currentNote.mkValue"
           :ishljs="true"
+          :preview="true"
+          :subfield="true"
+          :defaultOpen="preview"
           style="height: 700px"
           @imgAdd="ImgAdd"
           @imgDel="ImgDel"
@@ -45,7 +49,7 @@
       <div>
         目录:
         <el-cascader
-          v-model="currentNote.dir_path"
+          v-model="currentNote.folder_id"
           :options="options"
           :props="props"
           clearable

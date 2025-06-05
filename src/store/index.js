@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import notes from './modules/notes';
 import folders from './modules/folders';
-import user from './modules/user';
 import ui from './modules/ui';
 import books from './modules/books';
 
@@ -12,7 +11,6 @@ const store = new Vuex.Store({
   modules: {
     notes,
     folders,
-    user,
     ui,
     books
   },

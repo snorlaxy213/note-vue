@@ -54,8 +54,7 @@ const routes = [
     component: lazyLoad('write/write.vue'),
     meta: {
       title: '编写笔记',
-      keepAlive: false,
-      requiresAuth: true // 需要权限验证
+      keepAlive: false
     }
   },
   {
@@ -146,16 +145,6 @@ router.beforeEach(async (to, from, next) => {
   // 设置页面标题
   if (to.meta && to.meta.title) {
     document.title = `${to.meta.title} - 笔记应用`;
-  }
-
-  // 权限验证示例
-  if (to.meta && to.meta.requiresAuth) {
-    // 这里可以添加权限验证逻辑
-    // const hasAuth = await checkAuth();
-    // if (!hasAuth) {
-    //     next('/login');
-    //     return;
-    // }
   }
 
   next();

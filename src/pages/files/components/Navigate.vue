@@ -22,10 +22,10 @@
 
     <!--上传dig-->
     <el-dialog :visible.sync="editDialogVisible" title="提示" width="30%">
+
       <el-upload ref="upload" :auto-upload="false" :http-request="ht" multiple>
-        <el-button slot="trigger" size="small" type="primary"
-          >选取文件</el-button
-        >
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+
         <el-button
           size="small"
           style="margin-left: 10px"
@@ -34,6 +34,7 @@
           >上传到服务器
         </el-button>
       </el-upload>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="CloseUpLoad">取 消</el-button>
       </span>
@@ -54,6 +55,7 @@ export default {
     };
   },
   methods: {
+
     CloseUpLoad() {
       this.$parent.$refs.FileList.Total++;
       if (
@@ -99,9 +101,11 @@ export default {
         }
       });
     },
+
     submitUpload() {
       this.$refs.upload.submit();
     },
+
     UploadMd() {
       this.editDialogVisible = true;
     },
@@ -154,25 +158,6 @@ export default {
             });
         });
       }
-      // 移除了原来的 "文章名称" 相关逻辑
-    },
-
-    ChangeNav(title) {
-      this.loading = true;
-      request({
-        url: '/folder/sub_file/' + 1, // 导航时从第一页开始
-        params: {
-          title: title
-        }
-      }).then(resp => {
-        this.$parent.$refs.FileList.AccessFolder(
-          resp.data.Folders,
-          resp.data.Articles,
-          resp.data.Nav.reverse(),
-          resp.data.Total
-        );
-        this.loading = false;
-      });
     }
   }
 };
