@@ -11,7 +11,7 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     ecmaVersion: 2020,
     sourceType: 'module'
   },
@@ -28,18 +28,14 @@ module.exports = {
     
     // Prettier集成
     'prettier/prettier': 'error',
-    
-    // 移除与Prettier冲突的规则
-    // 'indent': 'off', // 由Prettier处理
-    // 'quotes': 'off', // 由Prettier处理
-    // 'semi': 'off', // 由Prettier处理
-    // 'comma-dangle': 'off', // 由Prettier处理
-    // 'no-trailing-spaces': 'off', // 由Prettier处理
-    // 'eol-last': 'off', // 由Prettier处理
-    // 'space-before-function-paren': 'off', // 由Prettier处理
-    // 'object-curly-spacing': 'off', // 由Prettier处理
-    // 'array-bracket-spacing': 'off', // 由Prettier处理
-    
+
+    'vue/multi-word-component-names': ['error', {
+      'filters': false,
+      'components': true,
+      'style': true,
+      'default': 'PascalCase' // 允许 PascalCase
+    }],
+
     // Vue 特定规则
     'vue/no-unused-components': 'warn',
     'vue/no-unused-vars': 'warn',
