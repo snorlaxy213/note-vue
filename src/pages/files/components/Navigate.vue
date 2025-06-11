@@ -44,6 +44,7 @@
 
 <script>
 import request from '@/network/request';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'Navigate',
@@ -54,6 +55,11 @@ export default {
       editDialogVisible: false
     };
   },
+
+  computed: {
+    ...mapState('folders', ['currentNote', 'loading'])
+  },
+
   methods: {
 
     CloseUpLoad() {

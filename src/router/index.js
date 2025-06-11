@@ -38,6 +38,17 @@ const routes = [
     path: '/',
     redirect: '/files' // 默认显示文件管理页面
   },
+  // 添加首页路由
+  {
+    name: 'home',
+    path: '/home',
+    component: lazyLoad('home/Home.vue'),
+    meta: {
+      title: '首页',
+      keepAlive: true,
+      preload: true
+    }
+  },
   {
     name: 'files',
     path: '/files',

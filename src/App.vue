@@ -10,6 +10,15 @@
         >
           <el-menu-item
             class="el-menu-item"
+            index="home"
+            @click="Link('home')"
+          >
+            <i class="el-icon-house"></i>
+            <span slot="title">Home</span>
+          </el-menu-item>
+
+          <el-menu-item
+            class="el-menu-item"
             index="write"
             @click="Link('write')"
           >
