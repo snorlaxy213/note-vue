@@ -7,8 +7,6 @@ Vue.use(VueRouter);
 const lazyLoad = (componentPath, chunkName) => {
   return () =>
     import(
-      /* webpackChunkName: "[request]" */
-      /* webpackPrefetch: true */
       `../pages/${componentPath}`
     ).catch(error => {
       console.error(`Failed to load component: ${componentPath}`, error);
@@ -27,8 +25,6 @@ const lazyLoad = (componentPath, chunkName) => {
 const manageLoad = componentPath => {
   return () =>
     import(
-      /* webpackChunkName: "manage" */
-      /* webpackPrefetch: true */
       `../pages/manage/components/${componentPath}`
     );
 };
