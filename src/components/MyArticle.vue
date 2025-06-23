@@ -334,16 +334,16 @@ export default {
 
 .input-new-tag {
   width: 90px;
-  margin-left: 10px;
+  /* 移除 margin-left: 10px; */
   vertical-align: bottom;
 }
 
 .button-new-tag {
-  margin-left: 10px;
   height: 24px;
   line-height: 22px;
   padding: 0 8px;
   font-size: 12px;
+  /* 移除 margin-left: 10px; */
 }
 
 /* 响应式设计 */
