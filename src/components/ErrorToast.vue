@@ -41,9 +41,10 @@
       <el-button
         @click="handleRetry"
         type="warning"
+        :loading="retrying"
         v-if="currentError.type === 'network'"
       >
-        重试请求
+        {{ retrying ? '重试中...' : '重试请求' }}
       </el-button>
       <el-button @click="handleClose" type="default"> 关闭 </el-button>
     </div>
@@ -57,7 +58,8 @@ export default {
   name: 'ErrorToast',
   data() {
     return {
-      showDetails: false
+      showDetails: false,
+      retrying: false
     };
   },
   computed: {
@@ -123,10 +125,64 @@ export default {
       window.location.reload();
     },
 
-    handleRetry() {
-      // 触发重试逻辑，可以通过事件总线或者回调函数实现
-      this.$emit('retry', this.currentError);
-      this.handleClose();
+    async handleRetry() {
+      if (this.retrying) return;
+      
+      this.retrying = true;
+      
+      try {
+        // 根据错误上下文重新发送请求
+        const errorContext = this.currentError.context;
+        
+        if (errorContext && errorContext.url) {
+          // 重新构造请求
+          const request = (await import('@/network/request')).default;
+          
+          const config = {
+            url: errorContext.url,
+            method: errorContext.method || 'GET'
+          };
+          
+          // 如果有参数，添加参数
+          if (errorContext.params) {
+            config.params = errorContext.params;
+          }
+          
+          if (errorContext.data) {
+            config.data = errorContext.data;
+          }
+          
+          // 发送重试请求
+          const response = await request(config);
+          
+          // 重试成功
+          this.$message({
+            message: '重试成功',
+            type: 'success'
+          });
+          
+          // 通知父组件重试成功，可以刷新数据
+          this.$emit('retry-success', {
+            originalError: this.currentError,
+            response: response
+          });
+          
+          this.handleClose();
+        } else {
+          throw new Error('无法重试：缺少请求信息');
+        }
+      } catch (error) {
+        // 重试失败
+        this.$message({
+          message: '重试失败：' + (error.message || '未知错误'),
+          type: 'error'
+        });
+        
+        // 可以选择更新错误信息或保持当前错误
+        console.error('重试失败:', error);
+      } finally {
+        this.retrying = false;
+      }
     },
 
     toggleDetails() {
