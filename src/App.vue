@@ -118,7 +118,7 @@ body {
 
 .main-content {
   height: 100vh;
-  overflow: hidden; /* 防止主内容区域的滚动条 */
+  overflow-y: auto; /* 改为允许垂直滚动 */
   padding: 10px;
 }
 
