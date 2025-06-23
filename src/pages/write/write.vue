@@ -15,14 +15,14 @@
             font-size: 30px;
           "
         >
-          <el-input v-model="currentNote.title" placeholder="标题"></el-input>
+          <el-input v-model="noteTitle" placeholder="标题"></el-input>
         </div>
       </el-row>
 
       <el-row>
         <mavon-editor
           ref="md"
-          v-model="currentNote.mkValue"
+          v-model="noteContent"
           :ishljs="true"
           :preview="true"
           :subfield="true"
@@ -49,7 +49,7 @@
       <div>
         目录:
         <el-cascader
-          v-model="currentNote.folder_id"
+          v-model="folderId"
           :options="options"
           :props="props"
           clearable
@@ -106,6 +106,7 @@ export default {
       props: {
         checkStrictly: true,
         lazy: true,
+        emitPath: false,  // 添加这一行
         lazyLoad(node, resolve) {
           request({
             url: '/folder/sub_folder',
@@ -123,7 +124,46 @@ export default {
   },
 
   computed: {
-    ...mapState('notes', ['currentNote', 'loading'])
+    ...mapState('notes', ['currentNote', 'loading']),
+    
+    // 使用计算属性处理标题的双向绑定
+    noteTitle: {
+      get() {
+        return this.currentNote.title;
+      },
+      set(value) {
+        this.setCurrentNote({
+          ...this.currentNote,
+          title: value
+        });
+      }
+    },
+    
+    // 使用计算属性处理内容的双向绑定
+    noteContent: {
+      get() {
+        return this.currentNote.mkValue;
+      },
+      set(value) {
+        this.setCurrentNote({
+          ...this.currentNote,
+          mkValue: value
+        });
+      }
+    },
+    
+    // 添加目录ID的计算属性
+    folderId: {
+      get() {
+        return this.currentNote.folder_id;
+      },
+      set(value) {
+        this.setCurrentNote({
+          ...this.currentNote,
+          folder_id: value
+        });
+      }
+    }
   },
 
   methods: {
