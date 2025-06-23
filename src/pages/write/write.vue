@@ -99,6 +99,8 @@ export default {
 
   data: function () {
     return {
+      // 添加preview属性
+      preview: 'preview', // 或者根据需要设置为 'edit' 或 'preview'
       //目录
       options: [],
       props: {

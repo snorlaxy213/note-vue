@@ -1,6 +1,6 @@
 <template>
   <div
-    v-loading.fullscreen.lock="loading"
+    v-loading.fullscreen.lock="localLoading"
     element-loading-spinner="el-icon-loading"
     element-loading-text="拼命加载中"
   >
@@ -51,7 +51,7 @@ export default {
   data: function () {
     return {
       Nav: [],
-      loading: false,
+      localLoading: false,
       editDialogVisible: false
     };
   },
@@ -61,6 +61,18 @@ export default {
   },
 
   methods: {
+
+    goToWrite() {
+      this.$router.push('/write');
+    },
+
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    
+    UploadMd() {
+      this.editDialogVisible = true;
+    },
 
     CloseUpLoad() {
       this.$parent.$refs.FileList.Total++;
@@ -81,7 +93,7 @@ export default {
 
     // 在ht方法中的请求添加错误处理
     ht(files) {
-      this.loading = true;
+      this.localLoading = true;
       let formData = new FormData();
       formData.append(files.file.name, files.file);
       request({
@@ -93,7 +105,7 @@ export default {
           'Folder-Title': this.Nav[this.Nav.length - 1]
         }
       }).then(resp => {
-        this.loading = false;
+        this.localLoading = false;
         if (resp.data.code == 200) {
           this.$message({
             message: resp.data.msg,
@@ -106,7 +118,7 @@ export default {
           });
         }
       }).catch(error => {
-        this.loading = false;
+        this.localLoading = false;
         // 错误已经被axios拦截器处理
         console.error('文件上传失败:', error);
       });
@@ -119,7 +131,7 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
         }).then(({ value }) => {
-          this.loading = true;
+          this.localLoading = true;
           request({
             url: '/folder/add',
             params: {
@@ -132,7 +144,7 @@ export default {
                 type: 'success',
                 message: resp.data.msg
               });
-              this.loading = false;
+              this.localLoading = false;
               this.$parent.$refs.FileList.FolderList.push(resp.data.data);
               this.$parent.$refs.FileList.Total++;
               if (this.$parent.$refs.FileList.FolderList.length > 10) {
