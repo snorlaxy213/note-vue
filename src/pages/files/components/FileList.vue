@@ -327,7 +327,7 @@ export default {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  height: calc(100vh - 20px); /* 减去主内容区域的padding */
+  /* height: calc(100vh - 20px); 移除这行固定高度 */
   display: flex;
   flex-direction: column;
 }
@@ -405,7 +405,7 @@ export default {
 .file-list-content {
   background: #fff;
   flex: 1;
-  overflow-y: auto;
+  /* overflow-y: auto; 移除或修改这个属性 */
   display: flex;
   flex-direction: column;
   min-height: 0; /* 关键：允许flex子项收缩 */
