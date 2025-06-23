@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row>
-      <!--侧边导航-->
+      <!-- 侧边导航 -->
       <el-col :span="1">
         <el-menu
           :collapse="true"
@@ -48,7 +48,7 @@
         </el-menu>
       </el-col>
 
-      <!--页面内容区域-->
+      <!-- 页面内容区域 -->
       <el-col :span="23" style="padding: 10px">
         <!-- 添加路由缓存支持 -->
         <keep-alive>
@@ -57,6 +57,9 @@
         <router-view v-if="!$route.meta.keepAlive" :key="$route.fullPath" />
       </el-col>
     </el-row>
+    
+    <!-- 添加全局错误提示组件 -->
+    <ErrorToast />
   </div>
 </template>
 

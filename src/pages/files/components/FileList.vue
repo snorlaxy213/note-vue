@@ -140,6 +140,7 @@ export default {
   methods: {
     // 提取公共的数据加载逻辑
     loadData() {
+      this.loading = true;
       request({
         url: '/folder/sub_file/' + this.currentPage
       }).then(resp => {
@@ -170,6 +171,11 @@ export default {
           this.$parent.$refs.navigate.$data.Nav = [...this.Nav].reverse();
         }
         this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        // 错误已经被axios拦截器处理并发送到store
+        // 这里只需要处理UI状态
+        console.error('加载文件列表失败:', error);
       });
     },
     
@@ -197,6 +203,9 @@ export default {
               ...resp.data.Nav
             ].reverse();
           }
+        }).catch(error => {
+          this.loading = false;
+          console.error('导航失败:', error);
         });
       }
     },
@@ -257,6 +266,9 @@ export default {
         this.FolderList = resp.data.Folders;
         this.ArticleList = resp.data.Articles;
         this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        console.error('分页加载失败:', error);
       });
     },
 
@@ -296,6 +308,9 @@ export default {
         this.ArticleList = resp.data.Articles;
         this.Total = Number(resp.data.Total);
         this.loading = false;
+      }).catch(error => {
+        this.loading = false;
+        console.error('刷新数据失败:', error);
       });
     }
   },

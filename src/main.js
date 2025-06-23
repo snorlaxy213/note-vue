@@ -21,8 +21,6 @@ Vue.component('ErrorToast', ErrorToast);
 
 // Vue全局错误处理器
 Vue.config.errorHandler = (err, vm, info) => {
-  console.error('Vue Error Handler:', err);
-  
   // 捕获Vue组件错误
   store.dispatch('errors/captureError', {
     type: 'component',

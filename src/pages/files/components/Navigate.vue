@@ -79,6 +79,7 @@ export default {
       this.editDialogVisible = false;
     },
 
+    // 在ht方法中的请求添加错误处理
     ht(files) {
       this.loading = true;
       let formData = new FormData();
@@ -91,7 +92,6 @@ export default {
           'Content-Type': 'multipart/form-data',
           'Folder-Title': this.Nav[this.Nav.length - 1]
         }
-        // eslint-disable-next-line no-unused-vars
       }).then(resp => {
         this.loading = false;
         if (resp.data.code == 200) {
@@ -105,25 +105,14 @@ export default {
             type: 'error'
           });
         }
+      }).catch(error => {
+        this.loading = false;
+        // 错误已经被axios拦截器处理
+        console.error('文件上传失败:', error);
       });
     },
 
-    submitUpload() {
-      this.$refs.upload.submit();
-    },
-
-    UploadMd() {
-      this.editDialogVisible = true;
-    },
-
-    // 新增方法：直接跳转到写作页面
-    goToWrite() {
-      // 检查当前路由是否已经在写作页面
-      if (this.$route.path !== '/write') {
-        this.$router.push('/write');
-      }
-    },
-
+    // 在open方法中的请求添加错误处理
     open(title) {
       if (title === '目录名称') {
         this.$prompt(title, '创建', {
