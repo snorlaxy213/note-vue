@@ -112,6 +112,8 @@ export default {
             }
           }).then(resp => {
             resolve(resp.data.data);
+          }).catch(error => {
+            console.error('目录加载失败:', error);
           });
         }
       }

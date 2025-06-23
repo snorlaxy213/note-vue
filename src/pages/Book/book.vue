@@ -42,6 +42,9 @@ export default {
     }).then(resp => {
       this.books = resp.data.items;
       this.loading2 = false;
+    }).catch(error => {
+      console.error('书架加载失败:', error);
+      this.loading2 = false;
     });
   },
   data: function () {

@@ -77,6 +77,9 @@ export default {
       }
       this.Count = resp.data.total;
       this.loading = false;
+    }).catch(error => {
+      console.error('回收站加载失败:', error);
+      this.loading = false;
     });
   },
 
