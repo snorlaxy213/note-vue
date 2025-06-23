@@ -12,13 +12,11 @@
     "lint:fix": "vue-cli-service lint --fix",
     "lint:check": "eslint --ext .js,.vue src/",
     "lint:fix-all": "eslint --ext .js,.vue src/ --fix",
+    "lint:format": "npm run lint:fix && npm run format",
     "format": "prettier --write \"src/**/*.{js,vue,json,css,scss,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,vue,json,css,scss,md}\"",
     "format:staged": "prettier --write",
-    "lint:format": "npm run lint:fix && npm run format",
-    "preview": "npm run build && npx http-server dist",
-    "deploy:build": "./deploy/build.sh",
-    "deploy:prod": "./deploy/deploy.sh"
+    "preview": "npm run build && npx http-server dist"
   },
   "dependencies": {
     "axios": "^0.27.2",
