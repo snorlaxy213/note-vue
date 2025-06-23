@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <el-row class="app-container">
+    <!-- Home页面独立布局 -->
+    <div v-if="isHomePage" class="home-layout">
+      <router-view :key="$route.fullPath" />
+    </div>
+    
+    <!-- 其他页面使用带侧边栏的布局 -->
+    <el-row v-else class="app-container">
       <!-- 侧边导航 -->
       <el-col :span="1">
         <el-menu
@@ -68,6 +74,10 @@ export default {
     ...mapGetters('ui', ['activeNavIndex']),
     navIndex() {
       return this.activeNavIndex || this.$route.name;
+    },
+    // 判断是否为Home页面
+    isHomePage() {
+      return this.$route.name === 'home';
     }
   },
   methods: {
@@ -103,6 +113,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   overflow: hidden; /* 防止应用层面的滚动条 */
+}
+
+/* Home页面独立布局样式 */
+.home-layout {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .app-container {
