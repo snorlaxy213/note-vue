@@ -327,6 +327,9 @@ export default {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
+  height: calc(100vh - 20px); /* 减去主内容区域的padding */
+  display: flex;
+  flex-direction: column;
 }
 
 /* 导航路径样式 - 纯白色 */
@@ -334,6 +337,7 @@ export default {
   padding: 16px 20px;
   background: #fff;
   border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
 }
 
 .nav-breadcrumb {
@@ -358,6 +362,7 @@ export default {
   border-bottom: 1px solid #f0f0f0;
   font-weight: 600;
   color: #333;
+  flex-shrink: 0;
 }
 
 .header-item {
@@ -396,10 +401,14 @@ export default {
   flex: 0 0 15%;
 }
 
-/* 文件列表内容 */
+/* 文件列表内容 - 关键修改 */
 .file-list-content {
-  min-height: 400px;
   background: #fff;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 关键：允许flex子项收缩 */
 }
 
 /* 文件夹和文件列表 */
@@ -407,15 +416,20 @@ export default {
 .article-list {
   padding: 0 20px;
   background: #fff;
+  flex-shrink: 0;
 }
 
-/* 分页样式 - 纯白色 */
+/* 分页样式 - 关键修改 */
 .pagination-container {
   padding: 20px;
   display: flex;
   justify-content: center;
   border-top: 1px solid #f0f0f0;
   background: #fff;
+  flex-shrink: 0; /* 确保分页不被压缩 */
+  position: sticky; /* 让分页固定在底部 */
+  bottom: 0;
+  z-index: 10;
 }
 
 /* 空状态样式 */
@@ -424,6 +438,12 @@ export default {
   padding: 60px 20px;
   color: #999;
   background: #fff;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* 确保空状态有最小高度 */
 }
 
 .empty-icon {
@@ -447,6 +467,10 @@ export default {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .file-list-container {
+    height: calc(100vh - 20px);
+  }
+  
   .file-header {
     font-size: 12px;
     padding: 12px 16px;
