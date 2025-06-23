@@ -32,7 +32,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    // 成功响应处理
     return response;
   },
   error => {
@@ -41,13 +40,16 @@ service.interceptors.response.use(
     let errorContext = {
       url: error.config?.url,
       method: error.config?.method,
+      params: error.config?.params,
+      data: error.config?.data,
+      headers: error.config?.headers,
       status: error.response?.status,
-      statusText: error.response?.statusText
+      statusText: error.response?.statusText,
+      timestamp: Date.now()
     };
 
     // 根据错误类型设置不同的错误信息
     if (error.response) {
-      // 服务器响应了错误状态码
       const status = error.response.status;
       switch (status) {
         case 400:
@@ -90,12 +92,20 @@ service.interceptors.response.use(
         errorMessage = error.response.data.message;
       }
     } else if (error.request) {
-      // 请求已发出但没有收到响应
       errorMessage = '网络连接失败，请检查网络设置';
       errorLevel = 'warning';
     } else {
-      // 请求配置出错
       errorMessage = '请求配置错误';
+    }
+
+    // 生成更详细的堆栈信息
+    let stackTrace = error.stack;
+    if (!stackTrace && error.response) {
+      // 为网络错误生成伪堆栈信息
+      stackTrace = `NetworkError: ${errorMessage}\n` +
+                  `    at ${error.config?.method?.toUpperCase()} ${error.config?.url}\n` +
+                  `    Status: ${error.response?.status} ${error.response?.statusText}\n` +
+                  `    Response: ${JSON.stringify(error.response?.data, null, 2)}`;
     }
 
     // 捕获网络错误到全局错误管理
@@ -105,7 +115,7 @@ service.interceptors.response.use(
       message: errorMessage,
       source: 'response-interceptor',
       context: errorContext,
-      stack: error.stack
+      stack: stackTrace
     });
 
     return Promise.reject(error);

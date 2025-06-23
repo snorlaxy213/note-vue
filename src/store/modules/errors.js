@@ -16,6 +16,75 @@ const state = {
 
 const mutations = {
   ADD_ERROR(state, error) {
+    // 检查是否存在相似的错误（在最近5秒内）
+    const now = Date.now();
+    const recentErrors = state.errors.filter(e => 
+      now - new Date(e.timestamp).getTime() < 5000 // 5秒内
+    );
+    
+    // 查找相似错误
+    const similarError = recentErrors.find(e => {
+      // 如果是网络错误和组件错误的组合
+      if ((error.type === 'network' && e.type === 'component') ||
+          (error.type === 'component' && e.type === 'network')) {
+        // 检查错误消息是否相关
+        const networkKeywords = ['网络', '请求', '服务器', '连接', 'network', 'request', 'failed', '500', '502', '503', '504'];
+        const hasNetworkKeyword = networkKeywords.some(keyword => 
+          error.message.toLowerCase().includes(keyword) || 
+          e.message.toLowerCase().includes(keyword)
+        );
+        return hasNetworkKeyword;
+      }
+      
+      // 检查完全相同的错误
+      return e.type === error.type && 
+             e.message === error.message && 
+             e.source === error.source;
+    });
+    
+    if (similarError) {
+      // 确定哪个错误有更详细的堆栈信息
+      const componentError = error.type === 'component' ? error : similarError;
+      const networkError = error.type === 'network' ? error : similarError;
+      
+      // 合并错误信息，优先保留组件错误的堆栈
+      const mergedError = {
+        ...similarError,
+        type: 'network', // 统一为网络错误
+        level: error.level === 'critical' || similarError.level === 'critical' ? 'critical' : 'error',
+        message: networkError.message, // 使用网络错误的消息，更准确
+        // 优先使用组件错误的堆栈，如果没有则使用网络错误的堆栈
+        stack: componentError.stack || networkError.stack || '',
+        source: 'network-component-merged',
+        context: {
+          ...networkError.context, // 保留网络错误的上下文（包含请求信息）
+          ...componentError.context, // 保留组件错误的上下文
+          mergedFrom: [similarError.type, error.type],
+          originalMessages: [similarError.message, error.message],
+          // 保留原始堆栈信息用于调试
+          originalStacks: {
+            network: networkError.stack,
+            component: componentError.stack
+          }
+        },
+        timestamp: similarError.timestamp // 保持原始时间戳
+      };
+      
+      // 更新现有错误
+      const index = state.errors.findIndex(e => e.id === similarError.id);
+      if (index > -1) {
+        state.errors.splice(index, 1, mergedError);
+      }
+      
+      // 更新当前错误显示
+      if (state.currentError && state.currentError.id === similarError.id) {
+        state.currentError = mergedError;
+      }
+      
+      return; // 不添加新错误
+    }
+    
+    // 如果没有相似错误，正常添加
     const errorWithId = {
       ...error,
       id: Date.now() + Math.random(),
